@@ -46,6 +46,8 @@ const FECHA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 const isAdmin = (req) => req.get("x-admin") === ADMIN_PASSWORD;
 const str = (v, max) => typeof v === "string" && v.trim().length > 0 && v.length <= max;
+// Nombres con la inicial de cada palabra en mayúscula
+const capNombre = (n) => String(n || "").trim().replace(/\s+/g, " ").toLocaleLowerCase("es").replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toLocaleUpperCase("es"));
 const soloDigitos = (v, max) => String(v || "").replace(/\D/g, "").slice(0, max);
 
 // Las clientas solo ven que un horario está ocupado; nombre y teléfono solo los ve la administradora o la dueña de la cita
@@ -183,7 +185,7 @@ app.put("/api/:coll/:id", async (req, res) => {
     const hora = hhmm.slice(0, 2) + ":" + hhmm.slice(2);
     const data = {
       fecha, serv, hora,
-      nombre: d.nombre.trim(), tel: d.tel.trim(), wa: soloDigitos(d.wa, 20),
+      nombre: capNombre(d.nombre), tel: d.tel.trim(), wa: soloDigitos(d.wa, 20),
       lang: d.lang === "en" ? "en" : "es", uid: d.uid,
       estado: d.estado === "pendiente" ? "pendiente" : "confirmado", ts: Date.now(),
     };
@@ -228,7 +230,7 @@ function limpiarCliente(d) {
   d = d || {};
   const wa = soloDigitos(d.wa || d.tel, 16);
   if (!str(d.nombre, 80) || wa.length < 6) return null;
-  const c = { nombre: d.nombre.trim(), tel: str(d.tel, 40) ? d.tel.trim() : "+" + wa, wa };
+  const c = { nombre: capNombre(d.nombre), tel: str(d.tel, 40) ? d.tel.trim() : "+" + wa, wa };
   if (typeof d.notas === "string") c.notas = d.notas.trim().slice(0, 500);
   return c;
 }
