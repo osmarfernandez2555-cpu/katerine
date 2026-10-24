@@ -265,7 +265,7 @@ es:{sub:"Especialista en",s1:"Elige el servicio",s2:"Elige el día",s3:"Elige tu
  extitle:"Citas",month:"Mes",pdf:"Descargar PDF",nores:"No hay citas en ese mes",pdff:"No se pudo generar el PDF",citas:"citas",gen:"Generado el",hdate:"Fecha",hhour:"Hora",hserv:"Servicio",hclient:"Clienta",hphone:"Teléfono",hstate:"Estado",hnotes:"Notas",
  ctitle:"Clientas",search:"Buscar por nombre o teléfono",cadd:"Agregar clienta",notes:"Notas (opcional)",imp:"Importar lista",imphint:"Una clienta por línea: nombre, teléfono. Ej: Ana López, +53 5 123 4567 (sin + se usa +53).",impbtn:"Importar",impdone:"clientas cargadas",impskip:"líneas salteadas (sin nombre o teléfono)",
  cnone:"Todavía no hay clientas",del:"Borrar",sure:"Toca otra vez para borrar",edit:"Editar",last:"Última cita",csaved:"Clienta guardada ✔",cdel:"Clienta borrada",total:"clientas",cedit:"Editar clienta",
- msg:function(s,d,h){return "¡Hola linda! Te escribo para confirmar tu cita de "+s.toLowerCase()+" el "+d+" a las "+h+". ¿Me confirmas que puedes asistir? ¡Gracias! 💖"}},
+ msg:function(n,s,d,h){return "Hola hermosa "+n+"! Te escribo para confirmar tu turno de "+s.toLowerCase()+", el "+d+" a las "+h+". ¿Me confirmás que podés asistir? ¡Gracias! ❤️"}},
 en:{sub:"Specialist in",s1:"Choose your service",s2:"Choose a day",s3:"Choose your time",closed:"No appointments this day 🌸",svoff:"This service isn’t available this day",
  av:"Available",busy:"Booked",yours:"This is your appointment 💖",mine:"My appointments",cancel:"Cancel",book:"Book your appointment",addc:"Add client",name:"Full name",num:"Phone (WhatsApp)",code:"Country code",
  ph2:"e.g. 5 123 4567",phint:"Country code is +53 (Cuba). If your number is from another country, change it (e.g. +1 USA).",msgl:"Message language",ok:"Confirm appointment",back:"Back",
@@ -279,7 +279,7 @@ en:{sub:"Specialist in",s1:"Choose your service",s2:"Choose a day",s3:"Choose yo
  extitle:"Appointments",month:"Month",pdf:"Download PDF",nores:"No appointments that month",pdff:"Could not create the PDF",citas:"appointments",gen:"Generated",hdate:"Date",hhour:"Time",hserv:"Service",hclient:"Client",hphone:"Phone",hstate:"Status",hnotes:"Notes",
  ctitle:"Clients",search:"Search by name or phone",cadd:"Add client",notes:"Notes (optional)",imp:"Import list",imphint:"One client per line: name, phone. E.g. Ana López, +53 5 123 4567 (without + it uses +53).",impbtn:"Import",impdone:"clients loaded",impskip:"lines skipped (missing name or phone)",
  cnone:"No clients yet",del:"Delete",sure:"Tap again to delete",edit:"Edit",last:"Last visit",csaved:"Client saved ✔",cdel:"Client deleted",total:"clients",cedit:"Edit client",
- msg:function(s,d,h){return "Hi love! I’m writing to confirm your "+s+" appointment on "+d+" at "+h+". Can you confirm you can make it? Thank you! 💖"}}};
+ msg:function(n,s,d,h){return "Hi beautiful "+n+"! I’m writing to confirm your "+s+" appointment on "+d+" at "+fh(h)+". Can you confirm you can make it? Thank you! ❤️"}}};
 var DWL={es:["dom","lun","mar","mié","jue","vie","sáb"],en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]};
 var MSL={es:["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]};
 var MSLF={es:["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],en:["January","February","March","April","May","June","July","August","September","October","November","December"]};
@@ -317,7 +317,9 @@ function normTel(c,v){var raw=String(v||"").trim(),d=raw.replace(/\D/g,""),cc=St
  if(cc==="54"){d=d.replace(/^9(?=\d{10}$)/,"").replace(/^0+/,"");if(d.length===12){for(var k=2;k<=4;k++){if(d.substr(k,2)==="15"){d=d.slice(0,k)+d.slice(k+2);break}}}
   if(d.length!==10)return null;return{wa:"549"+d,tel:"+54 9 "+d}}
  d=d.replace(/^0+/,"");if((cc+d).length<8||(cc+d).length>15)return null;return{wa:cc+d,tel:"+"+cc+" "+d}}
-function waLink(b){var l=b.lang||lang;return "https://wa.me/"+b.wa+"?text="+encodeURIComponent(L[l].msg(svName(b.serv,l),fd(b.fecha,l),fh(b.hora)))}
+function waLink(b){var l=b.lang||lang;return "https://wa.me/"+b.wa+"?text="+encodeURIComponent(L[l].msg(cap(b.nombre),svName(b.serv,l),fd(b.fecha,l),b.hora))}
+/* Nombres: siempre con la inicial de cada palabra en mayúscula (ej. "abel fernandez" → "Abel Fernandez") */
+function cap(n){return String(n||"").trim().replace(/\s+/g," ").toLocaleLowerCase("es").replace(/(^|[\s\-'’])(\p{L})/gu,function(m,a,b){return a+b.toLocaleUpperCase("es")})}
 
 /* ----- Conexión con el servidor ----- */
 function api(path,opt){opt=opt||{};var h={"Content-Type":"application/json"};if(adminPw)h["x-admin"]=adminPw;opt.headers=h;
@@ -376,7 +378,7 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
    if(!b){if(closedNow)return;
     h+='<button type="button" class="tslot" data-b="'+t+'"'+(ps?" disabled":"")+' aria-label="'+T("book")+' · '+svName(svc)+' · '+fd(sel)+' · '+fh(t)+'"><span class="t">'+fh(t)+'</span><span class="tag free">'+T("av")+'</span><span class="go" aria-hidden="true">→</span></button>';return}
    var mine=b.uid===uid,info='<span class="tag busy">'+T("busy")+'</span>',act="";
-   if(ownerMode)info+='<span class="who"><b>'+esc(b.nombre)+'</b> · '+esc(b.tel)+'</span>'+(b.estado==="pendiente"?'<span class="tag pendt">'+T("pend")+'</span>':'<span class="tag free">'+T("conf")+'</span>');
+   if(ownerMode)info+='<span class="who"><b>'+esc(cap(b.nombre))+'</b> · '+esc(b.tel)+'</span>'+(b.estado==="pendiente"?'<span class="tag pendt">'+T("pend")+'</span>':'<span class="tag free">'+T("conf")+'</span>');
    else if(mine)info+='<span class="who">'+T("yours")+'</span>';
    if(ownerMode)act='<div class="acts"><a class="btn sm" target="_blank" rel="noopener" href="'+waLink(b)+'">'+T("wa")+'</a>'+(b.estado==="pendiente"?'<button class="btn rose sm" data-ok="'+id+'">'+T("mark")+'</button>':'')+'<button class="btn ghost sm" data-c="'+id+'">'+T("cancel")+'</button></div>';
    else if(mine)act='<button class="btn ghost sm" data-c="'+id+'">'+T("cancel")+'</button>';
@@ -393,7 +395,7 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
  var cf="";
  if(ownerMode){var dl=Object.keys(bks).map(function(id){return Object.assign({id:id},bks[id])}).filter(function(b){return b.fecha===sel}).sort(function(a,b){return a.hora<b.hora?-1:a.hora>b.hora?1:0});
   cf='<h2>'+T("agenda")+' <span class="dhs">'+fd(sel)+'</span></h2><div class="cfg">'+
-   (dl.length?'<div class="dlist">'+dl.map(function(b){return '<div class="drow"><b>'+fh(b.hora)+'</b><span class="dsv">'+svName(b.serv)+'</span><span class="dnm">'+esc(b.nombre)+'<small>'+esc(b.tel)+'</small></span></div>'}).join("")+'</div>':'<p class="hint" style="margin:14px 0 4px">'+T("noday")+'</p>')+
+   (dl.length?'<div class="dlist">'+dl.map(function(b){return '<div class="drow"><b>'+fh(b.hora)+'</b><span class="dsv">'+svName(b.serv)+'</span><span class="dnm">'+esc(cap(b.nombre))+'<small>'+esc(b.tel)+'</small></span></div>'}).join("")+'</div>':'<p class="hint" style="margin:14px 0 4px">'+T("noday")+'</p>')+
    '<div style="margin:16px 0 6px"><button class="btn '+(c.cerrado?"":"rose ")+'sm" id="cb">'+(c.cerrado?T("reopen"):T("closeday"))+'</button></div>'+
    '<p class="hint" style="margin:14px 0 4px">'+T("svday")+'</p><div class="g">'+SV.map(function(s){return '<label class="chk" for="k_'+s.id+'"><input type="checkbox" id="k_'+s.id+'" data-k="'+s.id+'"'+(c[s.id]!==false?" checked":"")+'> '+s[lang]+'</label>'}).join("")+'</div></div>'}
  $("cfg").innerHTML=cf;
@@ -403,7 +405,7 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
  $("mineWrap").innerHTML=mineHtml();wireMine();
 }
 function mineHtml(){var my=Object.keys(bks).map(function(id){return Object.assign({id:id},bks[id])}).filter(function(b){return uid&&b.uid===uid&&b.fecha>=ymd(today)}).sort(function(a,b){return a.id<b.id?-1:1});
- return my.length?'<h2>'+T("mine")+'</h2>'+my.map(function(b){return '<div class="slot minec"><div class="i"><b>'+svName(b.serv)+'</b><small>'+fd(b.fecha)+' · '+fh(b.hora)+' · '+esc(b.nombre)+'</small></div><button class="btn ghost sm" data-c="'+b.id+'">'+T("cancel")+'</button></div>'}).join(""):""}
+ return my.length?'<h2>'+T("mine")+'</h2>'+my.map(function(b){return '<div class="slot minec"><div class="i"><b>'+svName(b.serv)+'</b><small>'+fd(b.fecha)+' · '+fh(b.hora)+' · '+esc(cap(b.nombre))+'</small></div><button class="btn ghost sm" data-c="'+b.id+'">'+T("cancel")+'</button></div>'}).join(""):""}
 function wireMine(){all("#mineWrap [data-c]",function(b){b.onclick=function(){askCancel(b.dataset.c)}})}
 
 /* ----- Hojas (ventanas inferiores) ----- */
@@ -424,7 +426,7 @@ all(".lang button",function(b){b.onclick=function(){lang=b.dataset.l;try{localSt
 /* ----- Reservar ----- */
 function telFields(val,cc){return '<div class="telrow"><input id="cc" type="tel" inputmode="tel" autocomplete="tel-country-code" value="'+(cc==null?"+53":cc)+'" aria-label="'+T("code")+'"><input id="p" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="'+T("ph2")+'" value="'+esc(val||"")+'"></div>'}
 function openBook(s,hr){
- var dl=ownerMode&&clientes.length?'<datalist id="cldl">'+clientes.map(function(c){return '<option value="'+esc(c.nombre)+'">'+esc(c.tel)+'</option>'}).join("")+'</datalist>':'';
+ var dl=ownerMode&&clientes.length?'<datalist id="cldl">'+clientes.map(function(c){return '<option value="'+esc(cap(c.nombre))+'">'+esc(c.tel)+'</option>'}).join("")+'</datalist>':'';
  sheet('<h3>'+(ownerMode?T("addc"):T("book"))+'</h3><div class="bsum"><b>'+svName(s)+'</b><span>'+fd(sel)+' · '+fh(hr)+'</span></div>'+
   '<label for="n">'+T("name")+'</label><input id="n" autocomplete="'+(ownerMode?"off":"name")+'"'+(dl?' list="cldl"':'')+'>'+dl+
   '<label for="p">'+T("num")+'</label>'+telFields()+'<small class="hint">'+T("phint")+'</small>'+
@@ -433,7 +435,7 @@ function openBook(s,hr){
  $("x").onclick=close_;
  if(ownerMode)$("n").oninput=function(){var v=$("n").value.trim().toLowerCase(),c=clientes.filter(function(x){return x.nombre.toLowerCase()===v})[0];if(c){$("cc").value="";$("p").value=c.tel}};
  $("ok").onclick=function(){
-  var n=$("n").value.trim(),ph=normTel($("cc").value,$("p").value);
+  var n=cap($("n").value),ph=normTel($("cc").value,$("p").value);
   if(n.length<2){fieldErr("n",T("errn"));return}if(!ph){fieldErr("p",T("errp"));return}fieldErr(null);busy($("ok"),true);
   var id=sid(sel,s,hr),bk={nombre:n,tel:ph.tel,wa:ph.wa,lang:ownerMode?$("ml").value:lang,uid:ownerMode?"admin":uid,estado:ownerMode?"pendiente":"confirmado"};
   put("turnos",id,bk).then(function(){
@@ -481,7 +483,7 @@ function openExport(){var opts="",cur=ymd(today).slice(0,7);
   api("/api/turnos?desde="+v+"-01&hasta="+v+"-"+String(last).padStart(2,"0")).then(function(rows){
    if(!rows.length){toast(T("nores"));return}
    rows.sort(function(a,b){var x=a.data.fecha+a.data.hora,y2=b.data.fecha+b.data.hora;return x<y2?-1:x>y2?1:0});
-   var body=rows.map(function(r){var t=r.data;return [fd(t.fecha),fh(t.hora),svName(t.serv),t.nombre,t.tel,t.estado==="pendiente"?T("pend"):T("conf")]});
+   var body=rows.map(function(r){var t=r.data;return [fd(t.fecha),fh(t.hora),svName(t.serv),cap(t.nombre),t.tel,t.estado==="pendiente"?T("pend"):T("conf")]});
    return makePdf(T("extitle")+" · "+MSLF[lang][m-1]+" "+y,rows.length+" "+T("citas"),[T("hdate"),T("hhour"),T("hserv"),T("hclient"),T("hphone"),T("hstate")],body,"citas-"+v+".pdf").then(function(){close_()})
   }).catch(function(e){console.error(e);toast(T("pdff"))}).then(function(){busy($("ok"),false)})}}
 
@@ -502,14 +504,14 @@ function loadClients(){return api("/api/clientes").then(function(rows){clientes=
 function openClients(){sheet('<h3>'+T("ctitle")+'</h3><div class="skel" style="height:70px" aria-hidden="true"></div><span class="sr">'+T("load")+'</span>');
  loadClients().then(function(){drawClients("")}).catch(function(e){console.error(e);close_();toast(T("signin"))})}
 function clientRows(q){var f=q.trim().toLowerCase(),fdg=f.replace(/\D/g,""),list=clientes.filter(function(c){return !f||c.nombre.toLowerCase().indexOf(f)>=0||(fdg.length>=3&&c.wa.indexOf(fdg)>=0)||(c.notas||"").toLowerCase().indexOf(f)>=0});
- return list.length?list.map(function(c){return '<div class="citem"><div class="ci"><b>'+esc(c.nombre)+'</b><small>'+esc(c.tel)+(c.ultimo?' · '+T("last")+': '+fd(c.ultimo):'')+'</small>'+(c.notas?'<small class="cn">'+esc(c.notas)+'</small>':'')+'</div><div class="ca"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/'+esc(c.wa)+'">WhatsApp</a><button class="btn ghost sm" data-ed="'+esc(c.id)+'">'+T("edit")+'</button></div></div>'}).join(""):'<div class="empty">'+T("cnone")+'</div>'}
+ return list.length?list.map(function(c){return '<div class="citem"><div class="ci"><b>'+esc(cap(c.nombre))+'</b><small>'+esc(c.tel)+(c.ultimo?' · '+T("last")+': '+fd(c.ultimo):'')+'</small>'+(c.notas?'<small class="cn">'+esc(c.notas)+'</small>':'')+'</div><div class="ca"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/'+esc(c.wa)+'">WhatsApp</a><button class="btn ghost sm" data-ed="'+esc(c.id)+'">'+T("edit")+'</button></div></div>'}).join(""):'<div class="empty">'+T("cnone")+'</div>'}
 function drawClients(q){q=q||"";
  sheet('<h3>'+T("ctitle")+' <span class="cnt">'+clientes.length+'</span></h3><div class="crow"><button class="btn rose sm" id="cadd">+ '+T("cadd")+'</button><button class="btn ghost sm" id="cimp">'+T("imp")+'</button><button class="btn sm" id="cpdf"'+(clientes.length?'':' disabled')+'>'+T("pdf")+'</button></div><label for="cq" class="sr">'+T("search")+'</label><input id="cq" type="search" autocomplete="off" placeholder="'+T("search")+'" value="'+esc(q)+'"><div class="clist" id="clist">'+clientRows(q)+'</div><div class="row"><button class="btn ghost" id="x">'+T("close")+'</button></div>');
  var wire=function(){all("[data-ed]",function(b){b.onclick=function(){clientForm(clientes.filter(function(c){return c.id===b.dataset.ed})[0])}})};wire();
  $("cq").oninput=function(){$("clist").innerHTML=clientRows($("cq").value);wire()};
  $("cadd").onclick=function(){clientForm(null)};$("cimp").onclick=importForm;$("x").onclick=close_;
  $("cpdf").onclick=function(){busy($("cpdf"),true);
-  makePdf(T("ctitle"),clientes.length+" "+T("total"),[T("hclient"),T("hphone"),T("last"),T("hnotes")],clientes.map(function(c){return [c.nombre,c.tel,c.ultimo?fd(c.ultimo):"-",c.notas||""]}),"clientas.pdf")
+  makePdf(T("ctitle"),clientes.length+" "+T("total"),[T("hclient"),T("hphone"),T("last"),T("hnotes")],clientes.map(function(c){return [cap(c.nombre),c.tel,c.ultimo?fd(c.ultimo):"-",c.notas||""]}),"clientas.pdf")
   .catch(function(e){console.error(e);toast(T("pdff"))}).then(function(){busy($("cpdf"),false)})}}
 function clientForm(c){var del1=0;
  sheet('<h3>'+(c?T("cedit"):T("cadd"))+'</h3><label for="n">'+T("name")+'</label><input id="n" autocomplete="off" value="'+esc(c?c.nombre:"")+'"><label for="p">'+T("num")+'</label>'+telFields(c?c.tel:"",c?"":null)+'<label for="nt">'+T("notes")+'</label><textarea id="nt" rows="3">'+esc(c&&c.notas||"")+'</textarea>'+
@@ -517,7 +519,7 @@ function clientForm(c){var del1=0;
  $("x").onclick=function(){drawClients("")};
  if(c)$("del").onclick=function(){if(!del1){del1=1;$("del").textContent=T("sure");$("del").classList.add("danger");return}
   del("clientes",c.id).then(loadClients).then(function(){toast(T("cdel"));drawClients("")}).catch(function(){toast(T("cfail"))})};
- $("ok").onclick=function(){var n=$("n").value.trim(),ph=normTel($("cc").value,$("p").value);
+ $("ok").onclick=function(){var n=cap($("n").value),ph=normTel($("cc").value,$("p").value);
   if(n.length<2){fieldErr("n",T("errn"));return}if(!ph){fieldErr("p",T("errp"));return}fieldErr(null);busy($("ok"),true);
   var id="c"+ph.wa,data={nombre:n,tel:ph.tel,wa:ph.wa,notas:$("nt").value.trim()};
   put("clientes",id,data).then(function(){if(c&&c.id!==id)return del("clientes",c.id)}).then(loadClients).then(function(){toast(T("csaved"));drawClients("")}).catch(function(){busy($("ok"),false);toast(T("sfail"))})}}
@@ -526,7 +528,7 @@ function importForm(){
  $("x").onclick=function(){drawClients("")};
  $("ok").onclick=function(){var items=[],skip=0;$("il").value.split(/\r?\n/).forEach(function(line){line=line.trim();if(!line)return;
    var m=line.match(/^(.*?)[,;\t]+\s*([+()\d][\d\s()+.\-]{5,})\s*$/)||line.match(/^(.*?\D)\s*([+(]?\d[\d\s()+.\-]{5,})\s*$/);
-   var ph=m&&normTel("+53",m[2]),n=m&&m[1].replace(/[,;\t]+$/,"").trim();
+   var ph=m&&normTel("+53",m[2]),n=m&&cap(m[1].replace(/[,;\t]+$/,""));
    if(!ph||!n||n.length<2){skip++;return}items.push({nombre:n,tel:ph.tel,wa:ph.wa})});
   if(!items.length){fieldErr("il",T("impskip")+": "+skip);return}
   busy($("ok"),true);
