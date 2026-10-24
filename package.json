@@ -1,0 +1,15 @@
+{
+  "name": "katerin-citas",
+  "version": "1.0.0",
+  "description": "Citas de Katerin",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "pg": "^8.12.0"
+  }
+}
