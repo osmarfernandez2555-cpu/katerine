@@ -28,8 +28,13 @@ app.use(express.json({ limit: "1mb" }));
 const SERVICIOS = {
   alisado: { nombre: "Alisado", horas: ["08:30", "09:30", "11:00"] },
   balayage: { nombre: "Balayage", horas: ["08:30"] },
-  tinte: { nombre: "Tinte", horas: ["10:30", "11:30"] },
+  tinte: { nombre: "Tinte", horas: [] },              // tinte y tratamiento usan el horario "extra" del día (ver REGLAS)
+  tratamiento: { nombre: "Tratamientos", horas: [] },
 };
+// Horario de tinte o tratamiento: en día de balayage a las 8:30; los demás días a la 1 PM (la administradora lo puede cambiar)
+const EXTRA0 = { extra_bal: "08:30", extra_otro: "13:00" };
+// Precios por defecto (la administradora los cambia desde el panel → Precios)
+const PRECIOS0 = { alisado: 9, tinte: 5, balayage: { corto: 60, medio: 85, largo: 100 }, balayageB: { corto: 65, medio: 90, largo: 120 }, tratamiento: { corto: 15, medio: 20, largo: 25 } };
 const SKEYS = Object.keys(SERVICIOS);
 
 // dias: días cerrados / servicios activos · turnos: reservas · config: horarios · clientes: base de clientas
@@ -37,10 +42,32 @@ const COLLS = ["dias", "turnos", "config", "clientes"];
 const ID_RE = {
   dias: /^\d{4}-\d{2}-\d{2}$/,
   turnos: new RegExp("^\\d{4}-\\d{2}-\\d{2}_(" + SKEYS.join("|") + ")_\\d{4}$"),
-  config: /^horarios$/,
+  config: /^(horarios|precios)$/,
   clientes: /^c\d{6,16}$/,
 };
 const SOLO_ADMIN_LECTURA = ["clientes"];
+// Tratamientos: tipo y largo de cabello (precio del tratamiento completo según el largo)
+// Servicios con opciones: tipo y largo de cabello (precio según el largo)
+const OPCIONES = {
+  tratamiento: {
+    tipos: { recon: "Reconstrucción, nutrición e hidratación", sos: "Tratamiento SOS", detox: "Detox capilar" },
+    largos: { corto: ["Por encima de los hombros"], medio: ["A mitad de espalda"], largo: ["Casi llegando a la espalda baja"] },
+  },
+  balayage: {
+    tipos: { lacio: "Balayage morena iluminada", rizado: "Balayage morena iluminada, cabello rizado", corto: "Balayage" },
+    largos: { corto: ["Corto, por encima de los hombros"], medio: ["Mediano, hasta mitad de espalda"], largo: ["Largo"] },
+    largosPorTipo: { corto: { corto: ["Corto, por encima de los hombros"], medio: ["Mediano, hasta mitad de espalda"], largo: ["Largo"] } }, // "Balayage" tiene sus propios precios
+  },
+};
+function largosDe(serv, tipo) {
+  const op = OPCIONES[serv];
+  return (op.largosPorTipo && op.largosPorTipo[tipo]) || op.largos;
+}
+function precioDe(P, serv, tipo, largo) {
+  if (serv === "balayage") return tipo === "corto" ? P.balayageB[largo] : P.balayage[largo];
+  if (serv === "tratamiento") return P.tratamiento[largo];
+  return null;
+}
 const HORA_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const FECHA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -68,13 +95,55 @@ function checkParams(req, res) {
 
 async function horariosActuales() {
   const { rows } = await pool.query("SELECT data FROM docs WHERE coll = 'config' AND id = 'horarios'");
+  const d = rows.length ? rows[0].data : {};
   const h = {};
-  for (const k of SKEYS) h[k] = rows.length && Array.isArray(rows[0].data[k]) ? rows[0].data[k] : SERVICIOS[k].horas;
+  for (const k of ["alisado", "balayage"]) h[k] = Array.isArray(d[k]) ? d[k] : SERVICIOS[k].horas;
+  h.extra_bal = HORA_RE.test(d.extra_bal || "") ? d.extra_bal : EXTRA0.extra_bal;
+  h.extra_otro = HORA_RE.test(d.extra_otro || "") ? d.extra_otro : EXTRA0.extra_otro;
   return h;
+}
+async function preciosActuales() {
+  const { rows } = await pool.query("SELECT data FROM docs WHERE coll = 'config' AND id = 'precios'");
+  const d = rows.length ? rows[0].data : {};
+  const num = (v, def) => (typeof v === "number" && v >= 0 && v < 10000 ? v : def);
+  const P = JSON.parse(JSON.stringify(PRECIOS0));
+  P.alisado = num(d.alisado, P.alisado); P.tinte = num(d.tinte, P.tinte); P.balayageB.corto = num(d.balayageCorto, P.balayageB.corto); // precio viejo de "cabello corto"
+  for (const k of ["corto", "medio", "largo"]) {
+    P.balayage[k] = num(d.balayage && d.balayage[k], P.balayage[k]);
+    P.tratamiento[k] = num(d.tratamiento && d.tratamiento[k], P.tratamiento[k]);
+    P.balayageB[k] = num(d.balayageB && d.balayageB[k], P.balayageB[k]);
+  }
+  return P;
+}
+
+// ---------- REGLAS DEL DÍA ----------
+// · Balayage y alisado nunca el mismo día.
+// · Día de balayage: 1 balayage (8:30) + 1 tinte o tratamiento.
+// · Día de alisado: hasta 3 alisados + 1 tinte o tratamiento (1 PM). Máximo 4 citas.
+// · Tinte y tratamiento: entre los dos, solo 1 por día.
+function reglaDelDia(citas, serv, hora, h) {
+  const n = (s) => citas.filter((c) => c.serv === s).length;
+  const diaBalayage = n("balayage") > 0;
+  if (serv === "alisado") {
+    if (diaBalayage) return "Ese día es de balayage: no se agendan alisados";
+    if (!h.alisado.includes(hora)) return "Horario no disponible";
+  }
+  if (serv === "balayage") {
+    if (n("alisado") > 0) return "Ese día es de alisados: no se agenda balayage";
+    if (n("balayage") >= 1) return "Ya hay un balayage ese día";
+    if (!h.balayage.includes(hora)) return "Horario no disponible";
+  }
+  if (serv === "tinte" || serv === "tratamiento") {
+    if (n("tinte") + n("tratamiento") >= 1) return "Ese día ya hay un tinte o tratamiento";
+    if (hora !== (diaBalayage ? h.extra_bal : h.extra_otro)) return "Horario no disponible";
+  }
+  return null;
 }
 
 // ---------- Página y librerías ----------
 app.get(["/", "/index.html"], (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+// Fotos de resultados de cada servicio (carpeta img/ del repo)
+app.use("/img", express.static(path.join(__dirname, "img"), { maxAge: "7d" }));
 const NM = path.join(__dirname, "node_modules");
 app.get("/vendor/jspdf.js", (req, res) => res.sendFile(path.join(NM, "jspdf", "dist", "jspdf.umd.min.js")));
 app.get("/vendor/autotable.js", (req, res) => res.sendFile(path.join(NM, "jspdf-autotable", "dist", "jspdf.plugin.autotable.min.js")));
@@ -158,9 +227,23 @@ app.put("/api/:coll/:id", async (req, res) => {
     if (coll === "config") {
       if (!isAdmin(req)) return res.status(403).json({ error: "solo administradora" });
       const data = {};
-      for (const k of SKEYS) {
-        const lista = Array.isArray(d[k]) ? d[k].filter((h) => HORA_RE.test(h)) : [];
-        data[k] = [...new Set(lista)].sort().slice(0, 20);
+      if (id === "horarios") {
+        for (const k of ["alisado", "balayage"]) {
+          const lista = Array.isArray(d[k]) ? d[k].filter((h) => HORA_RE.test(h)) : [];
+          data[k] = [...new Set(lista)].sort().slice(0, 20);
+        }
+        data.extra_bal = HORA_RE.test(d.extra_bal || "") ? d.extra_bal : EXTRA0.extra_bal;
+        data.extra_otro = HORA_RE.test(d.extra_otro || "") ? d.extra_otro : EXTRA0.extra_otro;
+      } else {
+        const num = (v) => (typeof v === "number" && v >= 0 && v < 10000 ? Math.round(v * 100) / 100 : null);
+        data.alisado = num(d.alisado); data.tinte = num(d.tinte); data.balayage = {}; data.balayageB = {}; data.tratamiento = {};
+        for (const k of ["corto", "medio", "largo"]) {
+          data.balayage[k] = num(d.balayage && d.balayage[k]);
+          data.tratamiento[k] = num(d.tratamiento && d.tratamiento[k]);
+          data.balayageB[k] = num(d.balayageB && d.balayageB[k]);
+        }
+        const todo = [data.alisado, data.tinte, ...Object.values(data.balayage), ...Object.values(data.balayageB), ...Object.values(data.tratamiento)];
+        if (todo.some((v) => v === null)) return res.status(400).json({ error: "precio inválido" });
       }
       await upsert(coll, id, data);
       return res.json({ ok: true });
@@ -189,13 +272,19 @@ app.put("/api/:coll/:id", async (req, res) => {
       lang: d.lang === "en" ? "en" : "es", uid: d.uid,
       estado: d.estado === "pendiente" ? "pendiente" : "confirmado", ts: Date.now(),
     };
+    if (OPCIONES[serv]) {
+      if (!OPCIONES[serv].tipos[d.trat] || !largosDe(serv, d.trat)[d.largo]) return res.status(400).json({ error: "falta el tipo o el largo del cabello" });
+      data.trat = d.trat; data.largo = d.largo;
+    }
 
     if (isAdmin(req)) {
       await upsert(coll, id, data);
     } else {
-      // Clienta: solo puede reservar un horario que exista y esté libre
+      // Clienta: solo puede reservar un horario que exista, esté libre y respete las reglas del día
       const h = await horariosActuales();
-      if (!h[serv].includes(hora)) return res.status(400).json({ error: "horario no disponible" });
+      const { rows: delDia } = await pool.query("SELECT data FROM docs WHERE coll = 'turnos' AND id LIKE $1", [fecha + "_%"]);
+      const motivo = reglaDelDia(delDia.map((r) => r.data), serv, hora, h);
+      if (motivo) return res.status(409).json({ error: motivo });
       data.estado = "confirmado";
       const r = await pool.query(
         "INSERT INTO docs (coll, id, data) VALUES ($1, $2, $3) ON CONFLICT (coll, id) DO NOTHING",
@@ -268,7 +357,13 @@ function hora12(h) {
 
 async function avisarPorMail(t) {
   if (!RESEND_API_KEY || !AVISO_EMAIL) { console.log("Aviso por mail desactivado: falta RESEND_API_KEY o AVISO_EMAIL"); return; }
-  const serv = (SERVICIOS[t.serv] || {}).nombre || t.serv;
+  let serv = (SERVICIOS[t.serv] || {}).nombre || t.serv;
+  const op = OPCIONES[t.serv];
+  if (op && op.tipos[t.trat]) {
+    const g = largosDe(t.serv, t.trat)[t.largo];
+    const precio = precioDe(await preciosActuales(), t.serv, t.trat, t.largo);
+    serv = op.tipos[t.trat] + (g ? ` (${g[0]}, $${precio} USD)` : "");
+  }
   const fecha = fechaLarga(t.fecha);
   const fila = (k, v) => `<tr><td style="padding:10px 0;color:#76666b;width:120px;vertical-align:top">${k}</td><td style="padding:10px 0;color:#2a2226;font-weight:600">${v}</td></tr>`;
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;background:#f8f1ec;padding:24px">
