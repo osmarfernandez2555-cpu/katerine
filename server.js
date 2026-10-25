@@ -99,6 +99,7 @@ async function horariosActuales() {
   return {
     balayage: Array.isArray(d.balayage) ? d.balayage : SERVICIOS.balayage.horas,
     turnos: Array.isArray(d.turnos) ? d.turnos : TURNOS0,
+    sabados: d.sabados === true, // los sábados están cerrados salvo que la administradora los habilite
   };
 }
 async function preciosActuales() {
@@ -230,6 +231,7 @@ app.put("/api/:coll/:id", async (req, res) => {
       if (!isAdmin(req)) return res.status(403).json({ error: "solo administradora" });
       const data = {};
       if (id === "horarios") {
+        data.sabados = d.sabados === true;
         for (const k of ["balayage", "turnos"]) {
           const lista = Array.isArray(d[k]) ? d[k].filter((h) => HORA_RE.test(h)) : [];
           data[k] = [...new Set(lista)].sort().slice(0, 20);
@@ -283,6 +285,11 @@ app.put("/api/:coll/:id", async (req, res) => {
       // Clienta: solo puede reservar un horario que exista, esté libre y respete las reglas del día
       const h = await horariosActuales();
       const { rows: delDia } = await pool.query("SELECT data FROM docs WHERE coll = 'turnos' AND id LIKE $1", [fecha + "_%"]);
+      // Día cerrado (sábados por defecto, o cerrado desde el panel) o servicio desactivado ese día
+      const { rows: diaCfg } = await pool.query("SELECT data FROM docs WHERE coll = 'dias' AND id = $1", [fecha]);
+      const esSabado = new Date(fecha + "T12:00:00Z").getUTCDay() === 6;
+      const dc = diaCfg.length ? diaCfg[0].data : { cerrado: esSabado && !h.sabados };
+      if (dc.cerrado || dc[serv] === false) return res.status(409).json({ error: "Ese día no hay atención" });
       const motivo = reglaDelDia(delDia.map((r) => r.data), serv, hora, h);
       if (motivo) return res.status(409).json({ error: motivo });
       data.estado = "confirmado";
