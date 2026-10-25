@@ -26,13 +26,13 @@ app.use(express.json({ limit: "1mb" }));
 
 // ---------- Servicios y horarios por defecto ----------
 const SERVICIOS = {
-  alisado: { nombre: "Alisado", horas: ["08:30", "09:30", "11:00"] },
+  alisado: { nombre: "Alisado", horas: [] },          // alisado, tinte y tratamiento usan los TURNOS compartidos
   balayage: { nombre: "Balayage", horas: ["08:30"] },
-  tinte: { nombre: "Tinte", horas: [] },              // tinte y tratamiento usan el horario "extra" del día (ver REGLAS)
+  tinte: { nombre: "Tinte", horas: [] },
   tratamiento: { nombre: "Tratamientos", horas: [] },
 };
-// Horario de tinte o tratamiento: en día de balayage a las 8:30; los demás días a la 1 PM (la administradora lo puede cambiar)
-const EXTRA0 = { extra_bal: "08:30", extra_otro: "13:00" };
+// Turnos compartidos por alisado, tinte y tratamiento (la administradora los cambia desde el panel)
+const TURNOS0 = ["08:30", "09:30", "11:00", "13:00"];
 // Precios por defecto (la administradora los cambia desde el panel → Precios)
 const PRECIOS0 = { alisado: 9, tinte: 5, balayage: { corto: 60, medio: 85, largo: 100 }, balayageB: { corto: 65, medio: 90, largo: 120 }, tratamiento: { corto: 15, medio: 20, largo: 25 } };
 const SKEYS = Object.keys(SERVICIOS);
@@ -96,11 +96,10 @@ function checkParams(req, res) {
 async function horariosActuales() {
   const { rows } = await pool.query("SELECT data FROM docs WHERE coll = 'config' AND id = 'horarios'");
   const d = rows.length ? rows[0].data : {};
-  const h = {};
-  for (const k of ["alisado", "balayage"]) h[k] = Array.isArray(d[k]) ? d[k] : SERVICIOS[k].horas;
-  h.extra_bal = HORA_RE.test(d.extra_bal || "") ? d.extra_bal : EXTRA0.extra_bal;
-  h.extra_otro = HORA_RE.test(d.extra_otro || "") ? d.extra_otro : EXTRA0.extra_otro;
-  return h;
+  return {
+    balayage: Array.isArray(d.balayage) ? d.balayage : SERVICIOS.balayage.horas,
+    turnos: Array.isArray(d.turnos) ? d.turnos : TURNOS0,
+  };
 }
 async function preciosActuales() {
   const { rows } = await pool.query("SELECT data FROM docs WHERE coll = 'config' AND id = 'precios'");
@@ -117,26 +116,29 @@ async function preciosActuales() {
 }
 
 // ---------- REGLAS DEL DÍA ----------
-// · Balayage y alisado nunca el mismo día.
-// · Día de balayage: 1 balayage (8:30) + 1 tinte o tratamiento.
-// · Día de alisado: hasta 3 alisados + 1 tinte o tratamiento (1 PM). Máximo 4 citas.
-// · Tinte y tratamiento: entre los dos, solo 1 por día.
+// · Balayage: 1 por día, en su horario (8:30). Nunca el mismo día que un alisado.
+// · Día de balayage: solo 1 cita más, de tinte o tratamiento, a la misma hora del balayage.
+// · Los demás días: alisado, tinte y tratamiento comparten los turnos (8:30, 9:30, 11:00, 13:00).
+//   Si un horario se ocupa con un servicio, ya no se puede reservar otro en ese horario.
 function reglaDelDia(citas, serv, hora, h) {
-  const n = (s) => citas.filter((c) => c.serv === s).length;
-  const diaBalayage = n("balayage") > 0;
-  if (serv === "alisado") {
-    if (diaBalayage) return "Ese día es de balayage: no se agendan alisados";
-    if (!h.alisado.includes(hora)) return "Horario no disponible";
-  }
+  const bal = citas.find((c) => c.serv === "balayage");
+  const esExtra = (s) => s === "tinte" || s === "tratamiento";
   if (serv === "balayage") {
-    if (n("alisado") > 0) return "Ese día es de alisados: no se agenda balayage";
-    if (n("balayage") >= 1) return "Ya hay un balayage ese día";
+    if (bal) return "Ya hay un balayage ese día";
     if (!h.balayage.includes(hora)) return "Horario no disponible";
+    const otras = citas.filter((c) => c.serv !== "balayage");
+    if (otras.some((c) => c.serv === "alisado")) return "Ese día es de alisados: no se agenda balayage";
+    if (otras.length > 1 || (otras.length === 1 && otras[0].hora !== hora)) return "Ese día ya tiene otras citas";
+    return null;
   }
-  if (serv === "tinte" || serv === "tratamiento") {
-    if (n("tinte") + n("tratamiento") >= 1) return "Ese día ya hay un tinte o tratamiento";
-    if (hora !== (diaBalayage ? h.extra_bal : h.extra_otro)) return "Horario no disponible";
+  if (bal) {
+    if (serv === "alisado") return "Ese día es de balayage: no se agendan alisados";
+    if (citas.some((c) => esExtra(c.serv))) return "Ese día ya hay un tinte o tratamiento con el balayage";
+    if (hora !== bal.hora) return "Horario no disponible";
+    return null;
   }
+  if (!h.turnos.includes(hora)) return "Horario no disponible";
+  if (citas.some((c) => c.hora === hora)) return "Ese horario ya está ocupado";
   return null;
 }
 
@@ -228,12 +230,10 @@ app.put("/api/:coll/:id", async (req, res) => {
       if (!isAdmin(req)) return res.status(403).json({ error: "solo administradora" });
       const data = {};
       if (id === "horarios") {
-        for (const k of ["alisado", "balayage"]) {
+        for (const k of ["balayage", "turnos"]) {
           const lista = Array.isArray(d[k]) ? d[k].filter((h) => HORA_RE.test(h)) : [];
           data[k] = [...new Set(lista)].sort().slice(0, 20);
         }
-        data.extra_bal = HORA_RE.test(d.extra_bal || "") ? d.extra_bal : EXTRA0.extra_bal;
-        data.extra_otro = HORA_RE.test(d.extra_otro || "") ? d.extra_otro : EXTRA0.extra_otro;
       } else {
         const num = (v) => (typeof v === "number" && v >= 0 && v < 10000 ? Math.round(v * 100) / 100 : null);
         data.alisado = num(d.alisado); data.tinte = num(d.tinte); data.balayage = {}; data.balayageB = {}; data.tratamiento = {};
