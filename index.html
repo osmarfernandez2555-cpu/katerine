@@ -237,6 +237,74 @@ input[aria-invalid="true"]{border-color:var(--rose);box-shadow:0 0 0 4px var(--r
 @media (min-width:700px){.hero{border-radius:0 0 48px 48px}.hero:before{width:480px;height:480px;left:calc(50% - 470px);top:-170px;background:radial-gradient(circle,rgba(242,201,211,.42),transparent 66%)}.hero:after{width:440px;height:440px;right:calc(50% - 450px);bottom:-190px}.months{margin:0 0 12px;padding:2px 4px}.hero-in{padding:72px 16px 48px}.ph{width:168px;height:212px}h1{font-size:70px}.days{margin:0;padding-left:4px;padding-right:4px}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 
+/* ---------- Ficha del servicio ---------- */
+#svinfo{scroll-margin-top:12px}
+.sinfo{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px 18px 18px;box-shadow:var(--sh)}
+.sinfo.open{animation:unfold .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes unfold{from{opacity:0;transform:translateY(-8px)}}
+.sit{font-family:'Cormorant Garamond',Georgia,serif;font-size:27px;font-weight:600;line-height:1.1;margin:0 0 14px}
+.gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 16px;padding:0 18px 4px;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gph{flex:0 0 58%;scroll-snap-align:start;padding:3px;border:0;border-radius:999px 999px 18px 18px;background:linear-gradient(160deg,#F3DDB0,var(--gold) 45%,#9C7636);cursor:zoom-in;box-shadow:0 10px 20px -14px rgba(20,16,18,.7)}
+.gph img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:999px 999px 15px 15px;border:2px solid var(--black)}
+.price{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;background:var(--black);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:16px}
+.price b{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;font-weight:600;line-height:1;color:var(--gold);font-variant-numeric:lining-nums}
+.price span{font-size:14.5px;color:rgba(255,255,255,.85)}
+.sih{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.lines{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.lines span{background:var(--rose-t);color:#5E2235;border-radius:99px;padding:6px 12px;font-size:14px;font-weight:500}
+.lines .more{background:transparent;border:1px dashed var(--line2);color:var(--mut);font-style:italic}
+.warn{display:flex;gap:12px;align-items:flex-start;background:var(--gold-t);border-radius:16px;padding:14px;margin-bottom:16px;color:#6B4E18}
+.warn svg{flex:0 0 18px;margin-top:2px}
+.warn b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+.warn p{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.rules li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45}
+.rules svg{flex:0 0 18px;margin-top:2px;color:var(--rose)}
+.bigph{display:block;width:100%;max-height:70vh;object-fit:contain;border-radius:16px;margin-top:10px;background:var(--blush)}
+@media (min-width:700px){.gph{flex-basis:31%}.gal{margin:0 0 16px;padding:0 0 4px}}
+
+/* ---------- Tratamientos ---------- */
+.svc[data-s="tratamiento"]{--c:var(--rose-l);--k:var(--ink);--ka:var(--ink)}
+.svc[data-s="tratamiento"] .sic{background:rgba(255,255,255,.45)}
+body[data-svc="tratamiento"]{--sv:var(--rose-l);--svk:var(--ink);--svt:#FBEFF2}
+.dsv[data-s="tratamiento"]:before{background:var(--rose-l);box-shadow:inset 0 0 0 1px var(--rose)}
+.tiers{background:var(--black);border-radius:16px;padding:6px 16px 12px;margin-bottom:16px;color:#fff}
+.tier{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid rgba(212,175,106,.25)}
+.tier span{font-size:14.5px;color:rgba(255,255,255,.88)}
+.tier b{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:var(--gold);line-height:1;white-space:nowrap;font-variant-numeric:lining-nums}
+.tier b small{font-family:'Jost',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,.7)}
+.tnote{display:flex;gap:8px;align-items:flex-start;margin:12px 0 0;font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.82)}
+.tnote svg{flex:0 0 18px;color:var(--rose-l)}
+.tipos{display:grid;gap:10px;margin-bottom:6px}
+.tipo{background:var(--blush);border-radius:16px;padding:14px 16px}
+.tipo b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;line-height:1.15;margin-bottom:4px}
+.tipo p{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+.tdet{display:block;margin-top:4px;font-size:13px;color:#8E3550!important;font-weight:500}
+.bpr{font-weight:600;color:var(--ink)!important}
+.bpr:empty{display:none}
+.tgr{margin:14px 0 0;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--rose-l)}
+.tgr:first-child{margin-top:8px}
+.pnote{flex-basis:100%;margin-top:6px;font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.75)}
+.gal:has(.gph:only-child) .gph{flex-basis:70%;margin:0 auto}
+
+/* ---------- Corte de cabello (WhatsApp) ---------- */
+.svc.cut{--c:var(--card);--k:var(--ink);--ka:var(--rose);text-decoration:none;border:1.5px dashed var(--line2);box-shadow:none;background:var(--card)}
+.svc.cut .sic{background:var(--rose-t);border-color:var(--rose)}
+.svc.cut .stx small{color:var(--mut)}
+.waic{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#1F7A4D;color:#fff;flex:0 0 40px}
+/* Editor de precios y horario extra */
+.pgrp{display:grid;gap:8px;margin-top:8px}
+.pl{display:flex!important;align-items:center;justify-content:space-between;gap:12px;text-transform:none!important;letter-spacing:0!important;font-size:14.5px!important;font-weight:500!important;color:var(--ink)!important;margin:0!important}
+.pin{display:flex;align-items:center;gap:6px;flex:0 0 120px}
+.pin b{color:var(--mut);font-weight:600}
+.pin input{text-align:right;padding:10px 12px}
+.xrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.xl{text-transform:none!important;letter-spacing:0!important;font-size:13.5px!important;font-weight:500!important;color:var(--ink)!important;margin:0!important;display:grid!important;gap:6px}
+.incl{display:flex;gap:10px;align-items:flex-start;background:var(--gold-t);border-radius:14px;padding:12px 14px;margin:-4px 0 16px;color:#6B4E18}
+.incl svg{flex:0 0 18px;margin-top:2px}
+.incl p{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink);font-weight:500}
+
 </style></head><body>
 <header class="hero">
  <div class="hero-in">
@@ -254,6 +322,7 @@ input[aria-invalid="true"]{border-color:var(--rose);box-shadow:0 0 0 4px var(--r
 <div class="top" id="top"></div>
 <div id="mineWrap"></div>
 <h2 class="st" id="h2s"></h2><div class="svcs" id="svcs" role="group"></div>
+<section id="svinfo" aria-live="polite"></section>
 <div class="step2"><h2 class="st" id="h2d"></h2><div class="months" id="months" role="group"></div><div class="days" id="days"></div></div>
 <div class="step3"><h2 class="st" id="dh"></h2><div id="slots"></div></div>
 <div id="cfg"></div>
@@ -272,13 +341,120 @@ var API_URL = RAILWAY_URL.replace(/\/+$/,"");
 var SV=[
  {id:"alisado",es:"Alisado",en:"Hair Straightening",ic:"M6.5 9c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5M6.5 9v11.5M9.5 7.5v13M12 7v13.5M14.5 7.5v13M17.5 9v11.5"},
  {id:"balayage",es:"Balayage",en:"Balayage",ic:"M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"},
- {id:"tinte",es:"Tinte",en:"Hair Color",ic:"M12 21a9 9 0 1 1 9-9c0 2-1.5 3-3.5 3H16a2 2 0 0 0-1.5 3.3A2.2 2.2 0 0 1 12 21zM7.5 11.5h.01M10.5 7.5h.01M15.5 8.5h.01"}];
-var H0={alisado:["08:30","09:30","11:00"],balayage:["08:30"],tinte:["10:30","11:30"]};
+ {id:"tinte",es:"Tinte",en:"Hair Color",ic:"M12 21a9 9 0 1 1 9-9c0 2-1.5 3-3.5 3H16a2 2 0 0 0-1.5 3.3A2.2 2.2 0 0 1 12 21zM7.5 11.5h.01M10.5 7.5h.01M15.5 8.5h.01"},
+ {id:"tratamiento",es:"Tratamientos",en:"Treatments",ic:"M6 20c0-8.5 5.5-15 14-16-.5 8.5-6.5 14-14 16zM6 20l7.5-7.5M9.5 9.5 12 12"}];
+var H0={alisado:["08:30","09:30","11:00"],balayage:["08:30"],extra_bal:"08:30",extra_otro:"13:00"}; // tinte o tratamiento: 8:30 en día de balayage, 1 PM los demás días
+var KATERIN_WA="5355537513"; // WhatsApp de Katerin (botón de corte de cabello)
+var P0={alisado:9,tinte:5,balayage:{corto:60,medio:85,largo:100},balayageB:{corto:65,medio:90,largo:120},tratamiento:{corto:15,medio:20,largo:25}};
+var P=JSON.parse(JSON.stringify(P0)),lastPre=null;
 var H=JSON.parse(JSON.stringify(H0));
-var DIAS_CERRADOS=[0]; // 0 = domingo cerrado por defecto (se puede abrir desde el panel)
+var DIAS_CERRADOS=[0];
+/* ===== Tratamientos: tipos y precios por largo de cabello ===== */
+var OPTS={};OPTS.tratamiento={lt:{es:"Tratamiento",en:"Treatment"},
+ tipos:[
+  {id:"recon",es:"Reconstrucción, nutrición e hidratación",en:"Reconstruction, nutrition & hydration",
+   des:"Ideal para cabellos secos, sin vida y con daños químicos menores, como por el calor de la plancha o de la secadora de cabello.",
+   den:"Ideal for dry, lifeless hair with minor chemical damage, such as heat from flat irons or hair dryers."},
+  {id:"sos",es:"Tratamiento SOS",en:"SOS treatment",
+   des:"Ideal para cabellos rubios decolorados muy procesados o cabellos dañados por altos niveles de peróxido al aplicarse el tinte, incluso por desriz o mala aplicación de alisados.",
+   den:"Ideal for heavily processed bleached blonde hair, or hair damaged by high peroxide levels when coloring, relaxers or poorly applied straightening."},
+  {id:"detox",es:"Detox capilar",en:"Hair detox",
+   des:"Ideal para cueros cabelludos con dermatitis o mucha grasa y cabellos opacos por exceso de aceites o siliconas. Elimina metales pesados del cabello para darle brillo, vida y suavidad, y purifica el cabello y el cuero cabelludo con una ligera sensación de frescura.",
+   den:"Ideal for scalps with dermatitis or excess oil, and hair dulled by oils or silicones. Removes heavy metals to bring back shine, life and softness, purifying hair and scalp with a light, fresh feeling."}],
+ largos:[
+  {id:"corto",es:"Por encima de los hombros",en:"Above the shoulders",p:15},
+  {id:"medio",es:"A mitad de espalda",en:"Mid-back",p:20},
+  {id:"largo",es:"Casi llegando a la espalda baja",en:"Almost to the lower back",p:25}]};
+OPTS.balayage={lt:{es:"Tipo de cabello",en:"Hair type"},
+ tipos:[{id:"lacio",es:"Morena iluminada",en:"Illuminated brunette"},
+  {id:"rizado",es:"Morena iluminada · cabello rizado",en:"Illuminated brunette · curly hair"},
+  {id:"corto",es:"Balayage",en:"Balayage",largos:[{id:"corto",es:"Corto, por encima de los hombros",en:"Short, above the shoulders",p:65},{id:"medio",es:"Mediano, por debajo de los hombros hasta mitad de espalda",en:"Medium, below the shoulders to mid-back",p:90},{id:"largo",es:"Largo",en:"Long",p:120}]}],
+ largos:[{id:"corto",es:"Corto, por encima de los hombros",en:"Short, above the shoulders",p:60},
+  {id:"medio",es:"Mediano, por debajo de los hombros hasta mitad de espalda",en:"Medium, below the shoulders to mid-back",p:85},
+  {id:"largo",es:"Largo",en:"Long",p:100}]};
+var TRAT=OPTS.tratamiento;
+function tipoOf(id,sv){var o=OPTS[sv||"tratamiento"];return o?o.tipos.filter(function(x){return x.id===id})[0]:null}
+function largosOf(sv,tipoId){var o=OPTS[sv];if(!o)return [];var t=tipoId&&o.tipos.filter(function(x){return x.id===tipoId})[0];return t&&t.largos?t.largos:o.largos}
+function largoOf(id,sv,tipoId){return largosOf(sv||"tratamiento",tipoId).filter(function(x){return x.id===id})[0]||null}
+/* Detalle de la cita con opciones: "Detox capilar · A mitad de espalda · $20 USD" */
+function tratTxt(b,l){l=l||lang;if(!OPTS[b.serv]||!b.trat)return "";var t=tipoOf(b.trat,b.serv),g=largoOf(b.largo,b.serv,b.trat);return (t?t[l]:"")+(g?" · "+g[l]+" · $"+g.p+" USD":"")}
+
+/* ===== Ficha de cada servicio (se despliega al elegirlo). Para sumar otro servicio, agregá su entrada acá. ===== */
+var INFO={
+ alisado:{
+  fotos:["alisado-1.jpg","alisado-2.jpg","alisado-3.jpg"],
+  es:{titulo:"Alisados orgánicos efecto espejo",fotosT:"Resultados reales",lineasT:"Trabajamos con diferentes líneas y métodos",
+   lineas:["Diamond","Pantera","Liso Lambido","Luminoliss","Qbella","Oxiplastia","Método Liso 3D"],mas:"¡Y muchos más!",
+   precio:"$9 USD",precioD:"por onza, incluyendo la mano de obra",
+   avisoT:"Importante",aviso:"No realizamos alisados en cabellos rubios que estén maltratados o con la fibra muy sensibilizada. En estos casos ofrecemos otros servicios de reconstrucción, nutrición e hidratación para ayudar a recuperar el cabello antes de realizar cualquier proceso químico.",
+   citaT:"Para tu cita",cita:["No se permiten acompañantes en el salón.","Por favor, ven a tu cita con el cabello limpio, lavado únicamente con shampoo. No aplicar acondicionador, mascarillas, aceites."],
+   ver:"Ver foto",cerrar:"Cerrar"},
+  en:{titulo:"Organic mirror-effect straightening",fotosT:"Real results",lineasT:"We work with different lines and methods",
+   lineas:["Diamond","Pantera","Liso Lambido","Luminoliss","Qbella","Oxiplastia","Método Liso 3D"],mas:"And many more!",
+   precio:"$9 USD",precioD:"per ounce, labor included",
+   avisoT:"Important",aviso:"We don’t straighten blonde hair that is damaged or has very sensitized fiber. In those cases we offer reconstruction, nutrition and hydration services to help recover the hair before any chemical process.",
+   citaT:"For your appointment",cita:["No companions allowed in the salon.","Please come with clean hair, washed with shampoo only. Do not apply conditioner, masks or oils."],
+   ver:"View photo",cerrar:"Close"}},
+ balayage:{
+  fotos:["balayage-4.jpg","balayage-5.jpg","balayage-1.jpg","balayage-2.jpg","balayage-3.jpg"],tiers:true,
+  grupos:[{tipos:["lacio","rizado"],es:"Morena iluminada · cabello lacio o rizado",en:"Illuminated brunette · straight or curly hair"},{tipos:["corto"],es:"Balayage",en:"Balayage"}],
+  es:{titulo:"Balayage",fotosT:"Resultados reales",preciosT:"Precio según el largo del cabello",preciosN:"Morena iluminada: mismo precio para cabello lacio o rizado.",
+   incluye:"Todos los balayages incluyen tratamiento de reconstrucción, nutrición e hidratación en el precio total.",
+   citaT:"Para tu cita",cita:["Ven a tu cita con el cabello previamente lavado con shampoo y acondicionador.","Antes de realizar cualquier balayage hacemos una prueba de mechón para garantizar el resultado y la salud de tu cabello, y confirmar que permite realizar el trabajo que deseas."],ver:"Ver foto",cerrar:"Cerrar"},
+  en:{titulo:"Balayage",fotosT:"Real results",preciosT:"Price by hair length",preciosN:"Illuminated brunette: same price for straight or curly hair.",
+   incluye:"Every balayage includes a reconstruction, nutrition and hydration treatment in the total price.",
+   citaT:"For your appointment",cita:["Come with your hair previously washed with shampoo and conditioner.","Before any balayage we do a strand test to guarantee the result and your hair’s health, and to confirm it allows the look you want."],ver:"View photo",cerrar:"Close"}},
+ tinte:{
+  fotos:["tinte-1.jpg"],
+  es:{titulo:"Tintes y correcciones de color",fotosT:"Resultados reales",precio:"$5 USD",precioD:"por onza, incluida la mano de obra",precioN:"El precio final depende de las onzas que se usen en tu cabello.",
+   citaT:"Para tu cita",cita:["Ven a tu cita con el cabello limpio, lavado con shampoo y acondicionador solamente, sin siliconas ni aceites."],ver:"Ver foto",cerrar:"Cerrar"},
+  en:{titulo:"Hair color and color correction",fotosT:"Real results",precio:"$5 USD",precioD:"per ounce, labor included",precioN:"The final price depends on how many ounces your hair needs.",
+   citaT:"For your appointment",cita:["Come with clean hair, washed with shampoo and conditioner only, no silicones or oils."],ver:"View photo",cerrar:"Close"}},
+ tratamiento:{
+  fotos:["tratamiento-1.jpg","tratamiento-2.jpg"],tiers:true,tipos:true,
+  es:{titulo:"Tratamientos capilares",fotosT:"Resultados reales",preciosT:"Precio según el largo del cabello",preciosN:"Precio del tratamiento completo según el largo del cabello, no por onza.",tiposT:"Elige tu tratamiento",ver:"Ver foto",cerrar:"Cerrar"},
+  en:{titulo:"Hair treatments",fotosT:"Real results",preciosT:"Price by hair length",preciosN:"Price for the full treatment by hair length, not per ounce.",tiposT:"Choose your treatment",ver:"View photo",cerrar:"Close"}},
+};
+
+/* ===== Reglas del día =====
+   · Balayage y alisado nunca el mismo día.
+   · Día de balayage: 1 balayage + 1 tinte o tratamiento (8:30).
+   · Día de alisado: hasta 3 alisados + 1 tinte o tratamiento (1 PM). Máximo 4 citas.
+   · Tinte y tratamiento: entre los dos, solo 1 por día. */
+function citasDia(date){return Object.keys(bks).map(function(k){return bks[k]}).filter(function(b){return b.fecha===date})}
+function cuenta(date,sv){return citasDia(date).filter(function(b){return b.serv===sv}).length}
+function esExtra(sv){return sv==="tinte"||sv==="tratamiento"}
+function timesFor(sv,date){if(esExtra(sv))return [cuenta(date,"balayage")>0?H.extra_bal:H.extra_otro];return (H[sv]||[]).slice()}
+function bloqueo(sv,date){
+ if(sv==="alisado"&&cuenta(date,"balayage")>0)return T("r_bal");
+ if(sv==="balayage"&&cuenta(date,"alisado")>0)return T("r_ali");
+ if(sv==="balayage"&&cuenta(date,"balayage")>=1)return T("r_bal1");
+ if(esExtra(sv)&&cuenta(date,"tinte")+cuenta(date,"tratamiento")>=1)return T("r_ext");
+ return ""}
+function applyPrices(){
+ OPTS.balayage.largos.forEach(function(g){g.p=P.balayage[g.id]});
+ OPTS.balayage.tipos.forEach(function(t){if(t.largos)t.largos.forEach(function(g){g.p=P.balayageB[g.id]})});
+ OPTS.tratamiento.largos.forEach(function(g){g.p=P.tratamiento[g.id]});
+ ["es","en"].forEach(function(l){INFO.alisado[l].precio="$"+P.alisado+" USD";INFO.tinte[l].precio="$"+P.tinte+" USD"})}
+function imgUrl(n){return API_URL+"/img/"+n}
+function ico(p){return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+p+'"/></svg>'}
+function infoHtml(id,anim){var d=INFO[id];if(!d)return "";var t=d[lang]||d.es;
+ return '<div class="sinfo'+(anim?" open":"")+'" data-s="'+id+'">'+
+  '<h3 class="sit">'+esc(t.titulo)+'</h3>'+
+  (d.fotos?'<div class="gal" role="list" aria-label="'+esc(t.fotosT)+'">'+d.fotos.map(function(src,i){return '<button type="button" class="gph" role="listitem" data-ph="'+i+'" aria-label="'+esc(t.ver)+' '+(i+1)+'"><img src="'+imgUrl(src)+'" alt="'+esc(t.fotosT)+' '+(i+1)+'" loading="lazy" width="600" height="800"></button>'}).join("")+'</div>':'')+
+  (t.precio?'<div class="price"><b>'+esc(t.precio)+'</b><span>'+esc(t.precioD)+'</span>'+(t.precioN?'<small class="pnote">'+esc(t.precioN)+'</small>':'')+'</div>':'')+
+  (d.tiers?'<p class="sih">'+esc(t.preciosT)+'</p><div class="tiers">'+(d.grupos||[{tipos:[null]}]).map(function(gr){return (gr[lang]?'<p class="tgr">'+esc(gr[lang])+'</p>':'')+largosOf(id,gr.tipos[0]).map(function(g){return '<div class="tier"><span>'+esc(g[lang])+'</span><b>$'+g.p+' <small>USD</small></b></div>'}).join("")}).join("")+'<p class="tnote">'+ico("M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.6-9.5 9-9.5 9z")+esc(t.preciosN)+'</p></div>':'')+
+  (t.incluye?'<div class="incl">'+ico("M20 6 9 17l-5-5")+'<p>'+esc(t.incluye)+'</p></div>':'')+
+  (d.tipos?'<p class="sih">'+esc(t.tiposT)+'</p><div class="tipos">'+OPTS[id].tipos.map(function(x){return '<div class="tipo"><b>'+esc(x[lang])+'</b><p>'+esc(lang==="en"?x.den:x.des)+'</p></div>'}).join("")+'</div>':'')+
+  (t.lineas?'<p class="sih">'+esc(t.lineasT)+'</p><div class="lines">'+t.lineas.map(function(x){return '<span>'+esc(x)+'</span>'}).join("")+'<span class="more">'+esc(t.mas)+'</span></div>':'')+
+  (t.aviso?'<div class="warn">'+ico("M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z")+'<div><b>'+esc(t.avisoT)+'</b><p>'+esc(t.aviso)+'</p></div></div>':'')+
+  (t.cita?'<p class="sih">'+esc(t.citaT)+'</p><ul class="rules">'+t.cita.map(function(x,i){return '<li>'+ico(/acompa|compan/i.test(x)?"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0 .01M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8":/mech|strand/i.test(x)?"M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14l-3-3":"M12 2.7c3.3 3.9 6 7.3 6 10.8a6 6 0 0 1-12 0c0-3.5 2.7-6.9 6-10.8z")+'<span>'+esc(x)+'</span></li>'}).join("")+'</ul>':'')+'</div>'}
+function wireInfo(){all("#svinfo [data-ph]",function(b){b.onclick=function(){var d=INFO[svc],t=d[lang]||d.es,i=+b.dataset.ph;
+ sheet('<h3>'+esc(t.fotosT)+'</h3><img class="bigph" src="'+imgUrl(d.fotos[i])+'" alt="'+esc(t.fotosT)+' '+(i+1)+'"><div class="row"><button class="btn ghost" id="x">'+esc(t.cerrar)+'</button></div>');$("x").onclick=close_}})}
+ // 0 = domingo cerrado por defecto (se puede abrir desde el panel)
 
 var L={
-es:{sub:"Especialista en",quote:"Cada cita es una transformación",s1:"Elige el servicio",s2:"Elige el día",s3:"Elige tu horario",closed:"Este día no hay atención 🌸",svoff:"Este servicio no está disponible este día",
+es:{sub:"Especialista en",r_bal:"Este día es de balayage: no hay alisados. Elige otro día.",r_ali:"Este día es de alisados: no hay balayage. Elige otro día.",r_bal1:"Ya hay un balayage este día. Elige otro día.",r_ext:"Ya hay un tinte o tratamiento este día. Elige otro día.",onbal:"(8:30 AM en días de balayage)",onbal2:"en días de balayage",cut:"Corte de cabello",cutd:"Coordínalo por WhatsApp con Katerin",cutmsg:"¡Hola Katerin! Quisiera coordinar un corte de cabello.",bpz:"Precios",ptitle:"Precios",prhint:"Los cambios se ven al instante en la página.",pali:"Alisado (USD por onza)",ptin:"Tinte (USD por onza)",pbal:"Balayage morena iluminada (lacio o rizado)",pbalc:"Balayage",ptra:"Tratamientos (todos)",pcorto:"Corto / por encima de los hombros",pmedio:"Mediano / mitad de espalda",plargo:"Largo",psaved:"Precios actualizados ✔",perr:"Revisa los precios: deben ser números",xtitle:"Tinte o tratamiento",xbal:"En día de balayage",xotro:"Los demás días",xhint:"Tinte y tratamiento comparten un solo turno por día.",hsoon:"Horarios próximamente",nohours:"Todavía no hay horarios disponibles para este servicio.",ttipo:"Tratamiento",tlargo:"Largo de tu cabello",tprecio:"Precio",errt:"Elige una opción y el largo de tu cabello",quote:"Cada cita es una transformación",s1:"Elige el servicio",s2:"Elige el día",s3:"Elige tu horario",closed:"Este día no hay atención 🌸",svoff:"Este servicio no está disponible este día",
  av:"Disponible",busy:"Ocupado",yours:"Es tu cita 💖",mine:"Mis citas",cancel:"Cancelar",book:"Reserva tu cita",addc:"Agendar clienta",name:"Nombre y apellido",num:"Teléfono (WhatsApp)",code:"Código de país",
  ph2:"ej. 5 123 4567",phint:"El código es +53 (Cuba). Si tu número es de otro país, cámbialo (ej. +1 Estados Unidos).",msgl:"Idioma del mensaje",ok:"Confirmar cita",back:"Volver",
  errn:"Escribe tu nombre y apellido",errp:"Revisa el número: debe tener 8 dígitos (ej. 5 123 4567)",taken:"Ese horario se acaba de ocupar",done:"¡Cita confirmada! 💖",fail:"No se pudo reservar, intenta de nuevo",
@@ -291,8 +467,8 @@ es:{sub:"Especialista en",quote:"Cada cita es una transformación",s1:"Elige el 
  extitle:"Citas",month:"Mes",pdf:"Descargar PDF",nores:"No hay citas en ese mes",pdff:"No se pudo generar el PDF",citas:"citas",gen:"Generado el",hdate:"Fecha",hhour:"Hora",hserv:"Servicio",hclient:"Clienta",hphone:"Teléfono",hstate:"Estado",hnotes:"Notas",
  ctitle:"Clientas",search:"Buscar por nombre o teléfono",cadd:"Agregar clienta",notes:"Notas (opcional)",imp:"Importar lista",imphint:"Una clienta por línea: nombre, teléfono. Ej: Ana López, +53 5 123 4567 (sin + se usa +53).",impbtn:"Importar",impdone:"clientas cargadas",impskip:"líneas salteadas (sin nombre o teléfono)",
  cnone:"Todavía no hay clientas",del:"Borrar",sure:"Toca otra vez para borrar",edit:"Editar",last:"Última cita",csaved:"Clienta guardada ✔",cdel:"Clienta borrada",total:"clientas",cedit:"Editar clienta",
- msg:function(n,s,d,h){return "Hola hermosa "+n+"! Te escribo para confirmar tu turno de "+s.toLowerCase()+", el "+d+" a las "+h+". ¿Me confirmás que podés asistir? ¡Gracias! \u2764"}},
-en:{sub:"Specialist in",quote:"Every appointment is a transformation",s1:"Choose your service",s2:"Choose a day",s3:"Choose your time",closed:"No appointments this day 🌸",svoff:"This service isn’t available this day",
+ msg:function(n,s,d,h){return "Hola hermosa "+n+"! Te escribo para confirmar tu turno de "+s+", el "+d+" a las "+h+". ¿Me confirmás que podés asistir? ¡Gracias! \u2764"}},
+en:{sub:"Specialist in",r_bal:"This is a balayage day: no straightening. Choose another day.",r_ali:"This is a straightening day: no balayage. Choose another day.",r_bal1:"There’s already a balayage this day. Choose another day.",r_ext:"There’s already a color or treatment this day. Choose another day.",onbal:"(8:30 AM on balayage days)",onbal2:"on balayage days",cut:"Haircut",cutd:"Book it with Katerin on WhatsApp",cutmsg:"Hi Katerin! I’d like to book a haircut.",bpz:"Prices",ptitle:"Prices",prhint:"Changes show on the page right away.",pali:"Straightening (USD per ounce)",ptin:"Color (USD per ounce)",pbal:"Illuminated brunette balayage (straight or curly)",pbalc:"Balayage",ptra:"Treatments (all)",pcorto:"Short / above the shoulders",pmedio:"Medium / mid-back",plargo:"Long",psaved:"Prices updated ✔",perr:"Check the prices: they must be numbers",xtitle:"Color or treatment",xbal:"On balayage days",xotro:"Other days",xhint:"Color and treatment share a single slot per day.",hsoon:"Times coming soon",nohours:"There are no times available for this service yet.",ttipo:"Treatment",tlargo:"Your hair length",tprecio:"Price",errt:"Choose an option and your hair length",quote:"Every appointment is a transformation",s1:"Choose your service",s2:"Choose a day",s3:"Choose your time",closed:"No appointments this day 🌸",svoff:"This service isn’t available this day",
  av:"Available",busy:"Booked",yours:"This is your appointment 💖",mine:"My appointments",cancel:"Cancel",book:"Book your appointment",addc:"Add client",name:"Full name",num:"Phone (WhatsApp)",code:"Country code",
  ph2:"e.g. 5 123 4567",phint:"Country code is +53 (Cuba). If your number is from another country, change it (e.g. +1 USA).",msgl:"Message language",ok:"Confirm appointment",back:"Back",
  errn:"Please enter your full name",errp:"Check the number: it should have 8 digits (e.g. 5 123 4567)",taken:"That time was just booked",done:"Appointment confirmed! 💖",fail:"Could not book, please try again",
@@ -326,7 +502,7 @@ function sid(date,s,h){return date+"_"+s+"_"+h.replace(":","")}
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(function(){t.style.display="none"},3400)}
 function past(date,h){var n=new Date();if(date!==ymd(n))return date<ymd(n);var p=h.split(":");return +p[0]*60+ +p[1]<=n.getHours()*60+n.getMinutes()}
 function cfg(date){var o={cerrado:DIAS_CERRADOS.indexOf(pd(date).getDay())>=0};SV.forEach(function(s){o[s.id]=true});return Object.assign(o,cfgs[date]||{})}
-function dayOff(x){var c=cfg(x);return c.cerrado||(svc&&c[svc]===false)}
+function dayOff(x){var c=cfg(x);return c.cerrado||(svc&&c[svc]===false)||(!ownerMode&&svc&&!!bloqueo(svc,x))}
 
 /* ----- Días: desde hoy hasta 3 meses ----- */
 var today=new Date();today.setHours(0,0,0,0);var days=[];
@@ -343,7 +519,8 @@ function normTel(c,v){var raw=String(v||"").trim(),d=raw.replace(/\D/g,""),cc=St
  if(cc==="54"){d=d.replace(/^9(?=\d{10}$)/,"").replace(/^0+/,"");if(d.length===12){for(var k=2;k<=4;k++){if(d.substr(k,2)==="15"){d=d.slice(0,k)+d.slice(k+2);break}}}
   if(d.length!==10)return null;return{wa:"549"+d,tel:"+54 9 "+d}}
  d=d.replace(/^0+/,"");if((cc+d).length<8||(cc+d).length>15)return null;return{wa:cc+d,tel:"+"+cc+" "+d}}
-function waLink(b){var l=b.lang||lang;return "https://wa.me/"+b.wa+"?text="+encodeURIComponent(L[l].msg(cap(b.nombre),svName(b.serv,l),fd(b.fecha,l),b.hora))}
+function msgServ(b,l){var t=b.serv==="tratamiento"&&tipoOf(b.trat);if(t)return l==="en"?t.en:(b.trat==="sos"?t.es:t.es.toLowerCase());return l==="en"?svName(b.serv,l):svName(b.serv,l).toLowerCase()}
+function waLink(b){var l=b.lang||lang;return "https://wa.me/"+b.wa+"?text="+encodeURIComponent(L[l].msg(cap(b.nombre),msgServ(b,l),fd(b.fecha,l),b.hora))}
 /* Nombres: siempre con la inicial de cada palabra en mayúscula (ej. "abel fernandez" → "Abel Fernandez") */
 function cap(n){return String(n||"").trim().replace(/\s+/g," ").toLocaleLowerCase("es").replace(/(^|[\s\-'’])(\p{L})/gu,function(m,a,b){return a+b.toLocaleUpperCase("es")})}
 
@@ -364,19 +541,21 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)refr
 
 /* ----- Pintar la página ----- */
 function svgI(p){return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+p+'"/></svg>'}
-function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;render.k=k;
+function render(){var jp=render.pick,dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;render.k=k;
  document.documentElement.lang=lang;document.body.setAttribute("data-svc",svc||"");
  all(".lang button",function(b){b.className=b.dataset.l===lang?"on":""});
  $("sub").innerHTML='<span class="tl">'+T("sub")+'</span><span class="sk">Colorimetría <i aria-hidden="true"></i> Balayage <i aria-hidden="true"></i> Alisados</span>';
  $("note").textContent=T("note");$("quote").textContent=T("quote");
- $("top").innerHTML=ownerMode?'<div class="admbar"><button class="btn sm" id="bcl">'+T("bcl")+'</button><button class="btn sm" id="bho">'+T("bho")+'</button><button class="btn sm" id="bex">'+T("bex")+'</button><button class="btn ghost sm" id="om">'+T("exit")+'</button></div>':"";
- if(ownerMode){$("bcl").onclick=openClients;$("bho").onclick=openHours;$("bex").onclick=openExport;$("om").onclick=logout}
+ $("top").innerHTML=ownerMode?'<div class="admbar"><button class="btn sm" id="bcl">'+T("bcl")+'</button><button class="btn sm" id="bho">'+T("bho")+'</button><button class="btn sm" id="bpz">'+T("bpz")+'</button><button class="btn sm" id="bex">'+T("bex")+'</button><button class="btn ghost sm" id="om">'+T("exit")+'</button></div>':"";
+ if(ownerMode){$("bcl").onclick=openClients;$("bho").onclick=openHours;$("bpz").onclick=openPrices;$("bex").onclick=openExport;$("om").onclick=logout}
 
  /* Paso 1: servicio */
  $("h2s").innerHTML='<span class="stp">1</span>'+T("s1");
- $("svcs").innerHTML=SV.map(function(s){var hs=H[s.id]||[],on=svc===s.id;
-  return '<button type="button" class="svc'+(on?" on":"")+(on&&render.pick===s.id?" pick":"")+'" data-s="'+s.id+'" aria-pressed="'+on+'"><span class="sic">'+svgI(s.ic)+'</span><span class="stx"><b>'+s[lang]+'</b><small>'+(hs.length?hs.map(fh).join(" · "):T("hempty"))+'</small></span><span class="chk2" aria-hidden="true"></span></button>'}).join("");
- render.pick=null;all(".svc",function(b){b.onclick=function(){var first=!svc;svc=b.dataset.s;render.pick=svc;if(dayOff(sel)){var n=days.filter(function(x){return !dayOff(x)})[0];if(n)sel=n}render();if(first)setTimeout(function(){$("h2d").scrollIntoView({behavior:"smooth",block:"start"})},60)}});
+ $("svcs").innerHTML=SV.map(function(s){var hs=esExtra(s.id)?[H.extra_otro]:(H[s.id]||[]),on=svc===s.id;
+  return '<button type="button" class="svc'+(on?" on":"")+(on&&render.pick===s.id?" pick":"")+'" data-s="'+s.id+'" aria-pressed="'+on+'"><span class="sic">'+svgI(s.ic)+'</span><span class="stx"><b>'+s[lang]+'</b><small>'+(hs.length?hs.map(fh).join(" · ")+(esExtra(s.id)?" ("+fh(H.extra_bal)+" "+T("onbal2")+")":""):T("hsoon"))+'</small></span><span class="chk2" aria-hidden="true"></span></button>'}).join("")+
+  '<a class="svc cut" href="https://wa.me/'+KATERIN_WA+'?text='+encodeURIComponent(T("cutmsg"))+'" target="_blank" rel="noopener"><span class="sic">'+svgI("M6 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12")+'</span><span class="stx"><b>'+T("cut")+'</b><small>'+T("cutd")+'</small></span><span class="waic" aria-hidden="true">'+svgI("M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3L3 21z")+'</span></a>';
+ render.pick=null;all(".svc[data-s]",function(b){b.onclick=function(){var first=!svc;svc=b.dataset.s;render.pick=svc;if(dayOff(sel)){var n=days.filter(function(x){return !dayOff(x)})[0];if(n)sel=n}render();if(first||INFO[svc])setTimeout(function(){(INFO[svc]?$("svinfo"):$("h2d")).scrollIntoView({behavior:"smooth",block:"start"})},60)}});
+ $("svinfo").innerHTML=svc?infoHtml(svc,jp===svc):"";wireInfo();
 
  var show=!!svc||ownerMode;
  all(".step2,.step3",function(e){e.hidden=!show});
@@ -396,20 +575,21 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
  $("dh").innerHTML='<span class="stp">3</span>'+T("s3")+(svc?' <span class="dhs">'+svName(svc)+' · '+fd(sel)+'</span>':'');
  var h="",c=cfg(sel);
  if(svc){
-  var times=(H[svc]||[]).slice();Object.keys(bks).forEach(function(id){var b=bks[id];if(b.fecha===sel&&b.serv===svc&&times.indexOf(b.hora)<0)times.push(b.hora)});times.sort();
+  var times=timesFor(svc,sel),blq=bloqueo(svc,sel);Object.keys(bks).forEach(function(id){var b=bks[id];if(b.fecha===sel&&b.serv===svc&&times.indexOf(b.hora)<0)times.push(b.hora)});times.sort();
   var closedNow=c.cerrado||c[svc]===false;
   if(closedNow&&!ownerMode)times=times.filter(function(t){var b=bks[sid(sel,svc,t)];return b&&b.uid===uid});
   if(closedNow)h+='<div class="empty">'+(c.cerrado?T("closed"):T("svoff"))+'</div>';
+  else if(blq)h+='<div class="empty">'+blq+'</div>';
   times.forEach(function(t){var id=sid(sel,svc,t),b=bks[id],ps=past(sel,t);
-   if(!b){if(closedNow)return;
+   if(!b){if(closedNow||(blq&&!ownerMode))return;
     h+='<button type="button" class="tslot" data-b="'+t+'"'+(ps?" disabled":"")+' aria-label="'+T("book")+' · '+svName(svc)+' · '+fd(sel)+' · '+fh(t)+'"><span class="t">'+fh(t)+'</span><span class="tag free">'+T("av")+'</span><span class="go" aria-hidden="true">→</span></button>';return}
    var mine=b.uid===uid,info='<span class="tag busy">'+T("busy")+'</span>',act="";
-   if(ownerMode)info+='<span class="who"><b>'+esc(cap(b.nombre))+'</b> · '+esc(b.tel)+'</span>'+(b.estado==="pendiente"?'<span class="tag pendt">'+T("pend")+'</span>':'<span class="tag free">'+T("conf")+'</span>');
+   if(ownerMode)info+='<span class="who"><b>'+esc(cap(b.nombre))+'</b> · '+esc(b.tel)+'</span>'+(b.estado==="pendiente"?'<span class="tag pendt">'+T("pend")+'</span>':'<span class="tag free">'+T("conf")+'</span>')+(tratTxt(b)?'<small class="tdet">'+esc(tratTxt(b))+'</small>':'');
    else if(mine)info+='<span class="who">'+T("yours")+'</span>';
    if(ownerMode)act='<div class="acts"><a class="btn sm" target="_blank" rel="noopener" href="'+waLink(b)+'">'+T("wa")+'</a>'+(b.estado==="pendiente"?'<button class="btn rose sm" data-ok="'+id+'">'+T("mark")+'</button>':'')+'<button class="btn ghost sm" data-c="'+id+'">'+T("cancel")+'</button></div>';
    else if(mine)act='<button class="btn ghost sm" data-c="'+id+'">'+T("cancel")+'</button>';
    h+='<div class="slot'+(!mine&&!ownerMode?" taken":"")+(ownerMode?" aslot":"")+'"><div class="t">'+fh(t)+'</div><div class="i">'+info+'</div>'+act+'</div>'});
-  if(!h)h='<div class="empty">'+T("svoff")+'</div>';
+  if(!h)h='<div class="empty">'+(timesFor(svc,sel).length?T("svoff"):T("nohours"))+'</div>';
  }
  if(LD.turnos&&!firstPaint&&prev===k)$("slots").classList.add("still");else $("slots").classList.remove("still");if(LD.turnos)firstPaint=false;
  $("slots").innerHTML=!svc?"":LD.turnos?h:(connErr?"":'<span class="sr">'+T("load")+'</span>'+'<div class="skel" aria-hidden="true"></div>'.repeat(2));
@@ -421,7 +601,7 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
  var cf="";
  if(ownerMode){var dl=Object.keys(bks).map(function(id){return Object.assign({id:id},bks[id])}).filter(function(b){return b.fecha===sel}).sort(function(a,b){return a.hora<b.hora?-1:a.hora>b.hora?1:0});
   cf='<h2>'+T("agenda")+' <span class="dhs">'+fd(sel)+'</span></h2><div class="cfg">'+
-   (dl.length?'<div class="dlist">'+dl.map(function(b){return '<div class="drow"><b>'+fh(b.hora)+'</b><span class="dsv" data-s="'+b.serv+'">'+svName(b.serv)+'</span><span class="dnm">'+esc(cap(b.nombre))+'<small>'+esc(b.tel)+'</small></span></div>'}).join("")+'</div>':'<p class="hint" style="margin:14px 0 4px">'+T("noday")+'</p>')+
+   (dl.length?'<div class="dlist">'+dl.map(function(b){return '<div class="drow"><b>'+fh(b.hora)+'</b><span class="dsv" data-s="'+b.serv+'">'+svName(b.serv)+'</span><span class="dnm">'+esc(cap(b.nombre))+'<small>'+esc(b.tel)+'</small>'+(tratTxt(b)?'<small class="tdet">'+esc(tratTxt(b))+'</small>':'')+'</span></div>'}).join("")+'</div>':'<p class="hint" style="margin:14px 0 4px">'+T("noday")+'</p>')+
    '<div style="margin:16px 0 6px"><button class="btn '+(c.cerrado?"":"rose ")+'sm" id="cb">'+(c.cerrado?T("reopen"):T("closeday"))+'</button></div>'+
    '<p class="hint" style="margin:14px 0 4px">'+T("svday")+'</p><div class="g">'+SV.map(function(s){return '<label class="chk" for="k_'+s.id+'"><input type="checkbox" id="k_'+s.id+'" data-k="'+s.id+'"'+(c[s.id]!==false?" checked":"")+'> '+s[lang]+'</label>'}).join("")+'</div></div>'}
  $("cfg").innerHTML=cf;
@@ -431,7 +611,7 @@ function render(){var dsc=$("days").scrollLeft,prev=render.k,k=sel+"|"+svc;rende
  $("mineWrap").innerHTML=mineHtml();wireMine();
 }
 function mineHtml(){var my=Object.keys(bks).map(function(id){return Object.assign({id:id},bks[id])}).filter(function(b){return uid&&b.uid===uid&&b.fecha>=ymd(today)}).sort(function(a,b){return a.id<b.id?-1:1});
- return my.length?'<h2>'+T("mine")+'</h2>'+my.map(function(b){return '<div class="slot minec"><div class="i"><b>'+svName(b.serv)+'</b><small>'+fd(b.fecha)+' · '+fh(b.hora)+' · '+esc(cap(b.nombre))+'</small></div><button class="btn ghost sm" data-c="'+b.id+'">'+T("cancel")+'</button></div>'}).join(""):""}
+ return my.length?'<h2>'+T("mine")+'</h2>'+my.map(function(b){return '<div class="slot minec"><div class="i"><b>'+svName(b.serv)+'</b><small>'+fd(b.fecha)+' · '+fh(b.hora)+' · '+esc(cap(b.nombre))+'</small>'+(tratTxt(b)?'<small class="tdet">'+esc(tratTxt(b))+'</small>':'')+'</div><button class="btn ghost sm" data-c="'+b.id+'">'+T("cancel")+'</button></div>'}).join(""):""}
 function wireMine(){all("#mineWrap [data-c]",function(b){b.onclick=function(){askCancel(b.dataset.c)}})}
 
 /* ----- Hojas (ventanas inferiores) ----- */
@@ -453,17 +633,23 @@ all(".lang button",function(b){b.onclick=function(){lang=b.dataset.l;try{localSt
 function telFields(val,cc){return '<div class="telrow"><input id="cc" type="tel" inputmode="tel" autocomplete="tel-country-code" value="'+(cc==null?"+53":cc)+'" aria-label="'+T("code")+'"><input id="p" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="'+T("ph2")+'" value="'+esc(val||"")+'"></div>'}
 function openBook(s,hr){
  var dl=ownerMode&&clientes.length?'<datalist id="cldl">'+clientes.map(function(c){return '<option value="'+esc(cap(c.nombre))+'">'+esc(c.tel)+'</option>'}).join("")+'</datalist>':'';
- sheet('<h3>'+(ownerMode?T("addc"):T("book"))+'</h3><div class="bsum"><b>'+svName(s)+'</b><span>'+fd(sel)+' · '+fh(hr)+'</span></div>'+
+ sheet('<h3>'+(ownerMode?T("addc"):T("book"))+'</h3><div class="bsum"><b>'+svName(s)+'</b><span>'+fd(sel)+' · '+fh(hr)+'</span>'+(OPTS[s]?'<span class="bpr" id="bpr"></span>':'')+'</div>'+
+  (OPTS[s]?'<label for="tt">'+OPTS[s].lt[lang]+'</label><select id="tt"><option value="">—</option>'+OPTS[s].tipos.map(function(x){return '<option value="'+x.id+'">'+esc(x[lang])+'</option>'}).join("")+'</select>'+
+   '<label for="tl">'+T("tlargo")+'</label><select id="tl"><option value="">—</option>'+OPTS[s].largos.map(function(g){return '<option value="'+g.id+'">'+esc(g[lang])+' · $'+g.p+' USD</option>'}).join("")+'</select>':'')+
   '<label for="n">'+T("name")+'</label><input id="n" autocomplete="'+(ownerMode?"off":"name")+'"'+(dl?' list="cldl"':'')+'>'+dl+
   '<label for="p">'+T("num")+'</label>'+telFields()+'<small class="hint">'+T("phint")+'</small>'+
   (ownerMode?'<label for="ml">'+T("msgl")+'</label><select id="ml"><option value="es">Español</option><option value="en">English</option></select>':'')+
   '<div class="row"><button class="btn ghost" id="x">'+T("back")+'</button><button class="btn rose" id="ok">'+T("ok")+'</button></div>');
  $("x").onclick=close_;
+ if(OPTS[s]){var upd=function(){var g=largoOf($("tl").value,s,$("tt").value),t=tipoOf($("tt").value,s);$("bpr").textContent=(t?t[lang]:"")+(t&&g?" · ":"")+(g?T("tprecio")+": $"+g.p+" USD":"")};
+  var fillL=function(){var ls=largosOf(s,$("tt").value),cur=$("tl").value;$("tl").innerHTML=(ls.length>1?'<option value="">—</option>':'')+ls.map(function(g){return '<option value="'+g.id+'"'+(g.id===cur?" selected":"")+'>'+esc(g[lang])+' · $'+g.p+' USD</option>'}).join("")};
+  $("tl").onchange=upd;$("tt").onchange=function(){fillL();upd()}}
  if(ownerMode)$("n").oninput=function(){var v=$("n").value.trim().toLowerCase(),c=clientes.filter(function(x){return x.nombre.toLowerCase()===v})[0];if(c){$("cc").value="";$("p").value=c.tel}};
  $("ok").onclick=function(){
   var n=cap($("n").value),ph=normTel($("cc").value,$("p").value);
+  if(OPTS[s]){if(!$("tt").value){fieldErr("tt",T("errt"));return}if(!$("tl").value){fieldErr("tl",T("errt"));return}}
   if(n.length<2){fieldErr("n",T("errn"));return}if(!ph){fieldErr("p",T("errp"));return}fieldErr(null);busy($("ok"),true);
-  var id=sid(sel,s,hr),bk={nombre:n,tel:ph.tel,wa:ph.wa,lang:ownerMode?$("ml").value:lang,uid:ownerMode?"admin":uid,estado:ownerMode?"pendiente":"confirmado"};
+  var id=sid(sel,s,hr),bk={trat:OPTS[s]?$("tt").value:undefined,largo:OPTS[s]?$("tl").value:undefined,nombre:n,tel:ph.tel,wa:ph.wa,lang:ownerMode?$("ml").value:lang,uid:ownerMode?"admin":uid,estado:ownerMode?"pendiente":"confirmado"};
   put("turnos",id,bk).then(function(){
    var full=Object.assign({fecha:sel,serv:s,hora:hr},bk);bks[id]=full;
    if(ownerMode){sheet('<h3>'+T("saved")+'</h3><div class="hint" style="margin:0">'+T("sendm")+'</div><div class="row"><button class="btn ghost" id="x">'+T("close")+'</button><a class="btn rose" target="_blank" rel="noopener" href="'+waLink(full)+'">'+T("wa")+'</a></div>');$("x").onclick=close_}
@@ -509,21 +695,37 @@ function openExport(){var opts="",cur=ymd(today).slice(0,7);
   api("/api/turnos?desde="+v+"-01&hasta="+v+"-"+String(last).padStart(2,"0")).then(function(rows){
    if(!rows.length){toast(T("nores"));return}
    rows.sort(function(a,b){var x=a.data.fecha+a.data.hora,y2=b.data.fecha+b.data.hora;return x<y2?-1:x>y2?1:0});
-   var body=rows.map(function(r){var t=r.data;return [fd(t.fecha),fh(t.hora),svName(t.serv),cap(t.nombre),t.tel,t.estado==="pendiente"?T("pend"):T("conf")]});
+   var body=rows.map(function(r){var t=r.data;return [fd(t.fecha),fh(t.hora),svName(t.serv)+(tratTxt(t)?" · "+tratTxt(t):""),cap(t.nombre),t.tel,t.estado==="pendiente"?T("pend"):T("conf")]});
    return makePdf(T("extitle")+" · "+MSLF[lang][m-1]+" "+y,rows.length+" "+T("citas"),[T("hdate"),T("hhour"),T("hserv"),T("hclient"),T("hphone"),T("hstate")],body,"citas-"+v+".pdf").then(function(){close_()})
   }).catch(function(e){console.error(e);toast(T("pdff"))}).then(function(){busy($("ok"),false)})}}
 
 /* ----- Horarios por servicio ----- */
-function openHours(){var tmp={};SV.forEach(function(s){tmp[s.id]=(H[s.id]||[]).slice()});
+function openHours(){var tmp={alisado:H.alisado.slice(),balayage:H.balayage.slice(),extra_bal:H.extra_bal,extra_otro:H.extra_otro};
  function draw(fk){var h='<h3>'+T("htitle")+'</h3><p class="hint" style="margin:0">'+T("hhint")+'</p>';
-  SV.forEach(function(s){var k=s.id;h+='<label for="nt_'+k+'">'+s[lang]+'</label><div class="chips">'+(tmp[k].length?tmp[k].map(function(x,j){return '<span class="chip">'+fh(x)+'<button type="button" data-rm="'+k+'|'+j+'" aria-label="'+T("del")+' '+fh(x)+'">×</button></span>'}).join(""):'<small class="hint" style="margin:0">'+T("hempty")+'</small>')+'</div><div class="addrow"><input type="time" id="nt_'+k+'" step="300"><button type="button" class="btn ghost sm" data-add="'+k+'">'+T("add")+'</button></div>'});
+  ["alisado","balayage"].forEach(function(k){h+='<label for="nt_'+k+'">'+svName(k)+'</label><div class="chips">'+(tmp[k].length?tmp[k].map(function(x,j){return '<span class="chip">'+fh(x)+'<button type="button" data-rm="'+k+'|'+j+'" aria-label="'+T("del")+' '+fh(x)+'">×</button></span>'}).join(""):'<small class="hint" style="margin:0">'+T("hempty")+'</small>')+'</div><div class="addrow"><input type="time" id="nt_'+k+'" step="300"><button type="button" class="btn ghost sm" data-add="'+k+'">'+T("add")+'</button></div>'});
+  h+='<label>'+T("xtitle")+'</label><p class="hint" style="margin:0 0 6px">'+T("xhint")+'</p><div class="xrow"><label class="xl" for="x_bal">'+T("xbal")+'<input type="time" id="x_bal" step="300" value="'+tmp.extra_bal+'"></label><label class="xl" for="x_otro">'+T("xotro")+'<input type="time" id="x_otro" step="300" value="'+tmp.extra_otro+'"></label></div>';
   sheet(h+'<div class="row"><button class="btn ghost" id="x">'+T("back")+'</button><button class="btn rose" id="ok">'+T("save")+'</button></div>');
   if(fk)setTimeout(function(){var e=$("nt_"+fk);if(e)e.focus()},80);
-  all("[data-rm]",function(b){b.onclick=function(){var p=b.dataset.rm.split("|");tmp[p[0]].splice(+p[1],1);draw(p[0])}});
-  all("[data-add]",function(b){var k=b.dataset.add,go=function(){var v=$("nt_"+k).value;if(!/^\d{2}:\d{2}$/.test(v)){$("nt_"+k).focus();return}if(tmp[k].indexOf(v)<0){tmp[k].push(v);tmp[k].sort()}draw(k)};b.onclick=go;$("nt_"+k).onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();go()}}});
+  var keep=function(){if(/^\d{2}:\d{2}$/.test($("x_bal").value))tmp.extra_bal=$("x_bal").value;if(/^\d{2}:\d{2}$/.test($("x_otro").value))tmp.extra_otro=$("x_otro").value};
+  all("[data-rm]",function(b){b.onclick=function(){keep();var p=b.dataset.rm.split("|");tmp[p[0]].splice(+p[1],1);draw(p[0])}});
+  all("[data-add]",function(b){var k=b.dataset.add,go=function(){keep();var v=$("nt_"+k).value;if(!/^\d{2}:\d{2}$/.test(v)){$("nt_"+k).focus();return}if(tmp[k].indexOf(v)<0){tmp[k].push(v);tmp[k].sort()}draw(k)};b.onclick=go;$("nt_"+k).onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();go()}}});
   $("x").onclick=close_;
-  $("ok").onclick=function(){busy($("ok"),true);put("config","horarios",tmp).then(function(){H=JSON.parse(JSON.stringify(tmp));close_();render();toast(T("hsaved"))}).catch(function(){busy($("ok"),false);toast(T("sfail"))})}}
+  $("ok").onclick=function(){keep();busy($("ok"),true);put("config","horarios",tmp).then(function(){H=JSON.parse(JSON.stringify(tmp));close_();render();toast(T("hsaved"))}).catch(function(){busy($("ok"),false);toast(T("sfail"))})}}
  draw()}
+function openPrices(){
+ var f=function(id,lab,v){return '<label class="pl" for="'+id+'"><span>'+lab+'</span><span class="pin"><b>$</b><input id="'+id+'" type="number" inputmode="decimal" min="0" step="0.5" value="'+v+'"></span></label>'};
+ sheet('<h3>'+T("ptitle")+'</h3><p class="hint" style="margin:0">'+T("prhint")+'</p>'+
+  '<div class="pgrp">'+f("p_ali",T("pali"),P.alisado)+f("p_tin",T("ptin"),P.tinte)+'</div>'+
+  '<p class="sih" style="margin-top:16px">'+T("pbal")+'</p><div class="pgrp">'+f("p_bc",T("pcorto"),P.balayage.corto)+f("p_bm",T("pmedio"),P.balayage.medio)+f("p_bl",T("plargo"),P.balayage.largo)+'</div>'+
+  '<p class="sih" style="margin-top:16px">'+T("pbalc")+'</p><div class="pgrp">'+f("p_b2c",T("pcorto"),P.balayageB.corto)+f("p_b2m",T("pmedio"),P.balayageB.medio)+f("p_b2l",T("plargo"),P.balayageB.largo)+'</div>'+
+  '<p class="sih" style="margin-top:16px">'+T("ptra")+'</p><div class="pgrp">'+f("p_tc",T("pcorto"),P.tratamiento.corto)+f("p_tm",T("pmedio"),P.tratamiento.medio)+f("p_tl",T("plargo"),P.tratamiento.largo)+'</div>'+
+  '<div class="row"><button class="btn ghost" id="x">'+T("back")+'</button><button class="btn rose" id="ok">'+T("save")+'</button></div>');
+ $("x").onclick=close_;
+ $("ok").onclick=function(){var v=function(id){var n=parseFloat(String($(id).value).replace(",","."));return isFinite(n)&&n>=0?n:null};
+  var np={alisado:v("p_ali"),tinte:v("p_tin"),balayage:{corto:v("p_bc"),medio:v("p_bm"),largo:v("p_bl")},balayageB:{corto:v("p_b2c"),medio:v("p_b2m"),largo:v("p_b2l")},tratamiento:{corto:v("p_tc"),medio:v("p_tm"),largo:v("p_tl")}};
+  var bad=["p_ali","p_tin","p_bc","p_bm","p_bl","p_b2c","p_b2m","p_b2l","p_tc","p_tm","p_tl"].filter(function(id){return v(id)===null})[0];
+  if(bad){fieldErr(bad,T("perr"));return}
+  busy($("ok"),true);put("config","precios",np).then(function(){P=np;applyPrices();close_();render();toast(T("psaved"))}).catch(function(){busy($("ok"),false);toast(T("sfail"))})}}
 
 /* ----- Clientas ----- */
 function loadClients(){return api("/api/clientes").then(function(rows){clientes=rows.map(function(r){return Object.assign({id:r.id},r.data)}).sort(function(a,b){return a.nombre.localeCompare(b.nombre)});return clientes})}
@@ -562,12 +764,14 @@ function importForm(){
    .catch(function(){busy($("ok"),false);toast(T("sfail"))})}}
 
 /* ----- Arranque ----- */
-render();
+applyPrices();render();
 (function(){
  try{uid=localStorage.getItem("k_uid")}catch(e){}
  if(!uid){uid="u"+Date.now().toString(36)+Math.random().toString(36).slice(2,10);try{localStorage.setItem("k_uid",uid)}catch(e){}}
- listen("config",function(rows){var hd=null;rows.forEach(function(r){if(r.id==="horarios")hd=r.data});var k=JSON.stringify(hd);if(k===lastCfg)return;lastCfg=k;
-  H=JSON.parse(JSON.stringify(H0));if(hd)SV.forEach(function(s){if(Array.isArray(hd[s.id]))H[s.id]=hd[s.id]});render()});
+ listen("config",function(rows){var hd=null;rows.forEach(function(r){if(r.id==="horarios")hd=r.data});var k=JSON.stringify(rows);if(k===lastCfg)return;lastCfg=k;
+  H=JSON.parse(JSON.stringify(H0));if(hd){["alisado","balayage"].forEach(function(k){if(Array.isArray(hd[k]))H[k]=hd[k]});if(/^\d{2}:\d{2}$/.test(hd.extra_bal||""))H.extra_bal=hd.extra_bal;if(/^\d{2}:\d{2}$/.test(hd.extra_otro||""))H.extra_otro=hd.extra_otro}
+  var pd2=null;rows.forEach(function(r){if(r.id==="precios")pd2=r.data});var kp=JSON.stringify(pd2);if(kp!==lastPre){lastPre=kp;P=JSON.parse(JSON.stringify(P0));if(pd2){["alisado","tinte"].forEach(function(k){if(typeof pd2[k]==="number")P[k]=pd2[k]});if(typeof pd2.balayageCorto==="number")P.balayageB.corto=pd2.balayageCorto;["balayage","balayageB","tratamiento"].forEach(function(g){if(pd2[g])["corto","medio","largo"].forEach(function(k){if(typeof pd2[g][k]==="number")P[g][k]=pd2[g][k]})})}applyPrices()}
+  render()});
  listen("dias",function(rows){var o={};rows.forEach(function(r){o[r.id]=r.data});var k=JSON.stringify(o);if(k===lastDias)return;lastDias=k;cfgs=o;render()});
  listen("turnos",function(rows){var o={};rows.forEach(function(r){o[r.id]=r.data});var k=JSON.stringify(o);if(k===lastTurnos&&LD.shown)return;lastTurnos=k;bks=o;LD.shown=true;render()});
 })();
